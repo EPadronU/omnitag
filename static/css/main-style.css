@@ -1,0 +1,224 @@
+a {
+    text-decoration: none;
+}
+body {
+    background: #F2F2F2;
+    font-family: "Pt Sans", Arial;
+    font-size: 16px;
+}
+footer {
+    background: #373E48;
+    color: white;
+    font-size: 0.8em;
+    margin: 0;
+    padding: 0.5em 0;
+    text-align: center;
+}
+footer p {
+    margin: 0;
+    padding: 0;
+}
+header {
+    background: #373E48;
+    max-height: 80px;
+    width: 100%;
+}
+header h1 {
+    background: #3771C8;
+    border-radius: 5px 5px 0 0;
+    clear: both;
+    color: white;
+    font-size: 1.2em;
+    margin: 0 auto;
+    max-width: 120px;
+    position: relative;
+    top: -5px;
+    text-align: center;
+}
+header #avatar {
+    float: right;
+    margin: 5px 6px 0 0;
+    position: relative;
+}
+header #avatar figcaption {
+    background: #3771C8;
+    border-radius: 0 0 2px 2px;
+    height: 10px;
+    position: absolute;
+    text-align: center;
+    top: 50px;
+    width: 50px;
+}
+header #avatar figcaption a {
+    color: #E4ECF7;
+    display: block;
+    position: relative;
+    top: -5px;
+    width: 100%;
+}
+header #avatar figcaption a:before {
+    content: "\e000";
+    font-family: icomoon;
+}
+header #avatar img {
+    width: 50px;
+}
+header #isologotype {
+    float: left;
+    margin: 15px 0 0 6px;
+}
+header #isologotype figcaption {
+    float: right;
+    left: 2px;
+    position: relative;
+    top: -3px;
+}
+header #isologotype figcaption a {
+    color: #D3DaDC;
+    font-family: Lobster;
+    font-size: 28px;
+}
+header #isologotype span a:after {
+    color: #2A7FFF;
+    content: "\f0da";
+    font-family: icomoon;
+    font-size: 30px;
+}
+nav {
+    background: #535D6C;
+    margin: 0;
+    min-height: 44px;
+    padding: 0;
+    width: 100%
+}
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+}
+nav ul li {
+    display: inline-block;
+    font-size: 0.9em;
+    margin: 0;
+    min-width: 20px;
+    padding: 0 0.2em;
+    text-align: center;
+}
+nav ul #add-tag, nav ul #save-search {
+    background: #FF6600;
+}
+nav ul #add-tag, nav ul .previous {
+    float: left;
+}
+nav ul #add-tag a, nav ul #save-search a, nav ul .next a, nav ul .previous a {
+    color: #E2EDFF;
+    display: block;
+    font-size: 20px;
+    line-height: 44px;
+    margin: 0;
+    padding: 0;
+}
+nav ul #add-tag a:after {
+    content: "\f014";
+    font-family: icomoon;
+}
+nav ul #save-search a:after {
+    content: "\e002";
+    font-family: icomoon;
+}
+nav ul #save-search, nav ul .next {
+    float: right;
+}
+nav ul .next, nav ul .previous {
+    background: #2A7FFF;
+}
+nav ul .next a:after {
+    content: "\f0d8";
+    font-family: icomoon;
+}
+nav ul .previous a:after {
+    content: "\f0d7";
+    font-family: icomoon;
+}
+nav ul .tag {
+    background: #B7BeC8;
+    border: 0.2px solid #0E0F11;
+    border-radius: 5px;
+    margin: 0.85em 0.1em;
+    text-align: center;
+}
+nav ul .tag a {
+    color: #333;
+    font-weight: bold;
+}
+nav ul .tag.active {
+    background: white;
+}
+#elements {
+    background: white;
+    border: 0.5px solid black;
+    border-radius: 5px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    top: -5px;
+    width: 96%;
+    z-index: 10;
+}
+#elements .element {
+    margin: 0.2em;
+    padding: 0;
+    width: 100%;
+}
+#elements .element figure {
+    margin: 0;
+    padding: 0;
+}
+#elements .element figure figcaption {
+    float: right;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    width: 85%;
+}
+#elements .element figure figcaption a {
+    color: #1A1A1A;
+    font-size: 0.9em;
+    display: block;
+    line-height: 1em;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+#elements .element figure span a {
+    color: #3731C8;
+}
+#elements .element figure span a:after {
+    content: "\e003";
+    font-family: icomoon;
+    font-size: 28px;
+}
+#search-options {
+    background: #535D6C;
+    border-radius: 0 0 4px 4px;
+    margin: 0 auto;
+    max-height: 10px;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    width: 63px;
+    z-index: 20;
+}
+#search-options span a {
+    color: #E7E9EB;
+    position: relative;
+    top: -5px;
+}
+#search-options span a:after {
+    content: "\e000";
+    display: block;
+    font-family: icomoon;
+    width: 100%;
+}
