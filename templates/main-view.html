@@ -4,58 +4,110 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <title>Main view</title>
-        <link rel="stylesheet" href="/static/css/normalize.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" media="all" />
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,700|Lobster" type="text/css" media="all" />
         <link rel="stylesheet" href="/static/css/icomoon.css" type="text/css" media="all" />
         <link rel="stylesheet" href="/static/css/main-style.css" type="text/css" media="all" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
     </head>
 
     <body>
         <header>
-            <figure id="isologotype">
-                <span> <a href="#"> </a> </span>
+            <div class="row">
+                <div id="isologotype" class="col-xs-9">
+                    <p><a href="#">Omni Tag</a></p>
+                </div>
 
-                <figcaption> <a href="#">Omni Tag</a> </figcaption>
-            </figure>
+                <div id="avatar" class="col-xs-3">
+                    <figure>
+                        <img src="/static/img/avatar.jpg" alt="User's avatar" />
 
-            <figure id="avatar">
-                <img src="/static/img/avatar.jpg" alt="User's avatar" />
+                        <figcaption><a href="#"> </a></figcaption>
+                    </figure>
+                </div>
+            </div>
 
-                <figcaption> <a href="#"></a> </figcaption>
-            </figure>
-
-            <h1>Explorer</h1>
+            <div class="row">
+                <div id="title" class="col-xs-12">
+                    <h1>Explorer</h1>
+                </div>
+            </div>
         </header>
 
         <nav id="tags">
-            <ul>
-                <li id="add-tag"> <a href="#"> </a> </li>
-                <li class="previous"> <a href="#"> </a> </li>
-                <li class="tag active"> <a href="#">Photos</a> </li>
-                <li class="tag"> <a href="#">Work</a> </li>
-                <li class="tag active"> <a href="#">Family</a> </li>
-                <li class="tag active"> <a href="#">Travel</a> </li>
-                <li id="save-search"> <a href="#"> </a> </li>
-                <li class="next"> <a href="#"> </a> </li>
+            <ul class="row">
+                <li id="add-tag" class="col-xs-1"><a href="#"> </a></li>
+                <li class="arrow-left col-xs-1"><a href="#"> </a></li>
+                <li class="tag active col-xs-2"><a href="#">Photos</a></li>
+                <li class="tag col-xs-2"><a href="#">Work</a></li>
+                <li class="tag active col-xs-2"><a href="#">Family</a></li>
+                <li class="tag active col-xs-2"><a href="#">Travel</a></li>
+                <li class="arrow-rigth col-xs-1"><a href="#"> </a></li>
+                <li id="save-search" class="col-xs-1"><a href="#"> </a></li>
             </ul>
         </nav>
 
-        <div id="search-options">
-            <span> <a href="#"> </a> </span>
+        <div class="row">
+            <div id="search-options" class="col-xs-12">
+                <p><a href="#"> </a></p>
+            </div>
         </div>
 
         <section id="elements">
-            <article class="element">
-                <figure>
-                    <span> <a href="#"> </a> </span>
+            <div class="row">
+                <article class="element col-xs-6 col-sm-4">
+                    <figure>
+                        <span class="element-img"><a href="#"> </a></span>
 
-                    <figcaption> <a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a> </figcaption>
-                </figure>
-            </article>
+                        <figcaption><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></figcaption>
+                    </figure>
+                </article>
+
+                <article class="element col-xs-6 col-sm-4">
+                    <figure>
+                        <span class="element-img"><a href="#"> </a></span>
+
+                        <figcaption><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></figcaption>
+                    </figure>
+                </article>
+
+                <article class="element col-xs-6 col-sm-4">
+                    <figure>
+                        <span class="element-img"><a href="#"> </a></span>
+
+                        <figcaption><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></figcaption>
+                    </figure>
+                </article>
+
+                <article class="element col-xs-6 col-sm-4">
+                    <figure>
+                        <span class="element-img"><a href="#"> </a></span>
+
+                        <figcaption><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></figcaption>
+                    </figure>
+                </article>
+
+                <article class="element col-xs-6 col-sm-4">
+                    <figure>
+                        <span class="element-img"><a href="#"> </a></span>
+
+                        <figcaption><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></figcaption>
+                    </figure>
+                </article>
+
+                <article class="element col-xs-6 col-sm-4">
+                    <figure>
+                        <span class="element-img"><a href="#"> </a></span>
+
+                        <figcaption><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></figcaption>
+                    </figure>
+                </article>
+            </div>
         </section>
 
         <footer>
-            <p>Power by Flask</p>
+            <p>Power by Flask &amp; Boostrap</p>
             <p>Nodsine's Technologies</p>
         </footer>
     </body>

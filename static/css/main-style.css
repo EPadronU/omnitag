@@ -4,12 +4,11 @@ a {
 body {
     background: #F2F2F2;
     font-family: "Pt Sans", Arial;
-    font-size: 16px;
 }
 footer {
     background: #373E48;
     color: white;
-    font-size: 0.8em;
+    font-size: 0.9em;
     margin: 0;
     padding: 0.5em 0;
     text-align: center;
@@ -20,185 +19,109 @@ footer p {
 }
 header {
     background: #373E48;
-    max-height: 80px;
     width: 100%;
 }
-header h1 {
-    background: #3771C8;
-    border-radius: 5px 5px 0 0;
-    clear: both;
-    color: white;
-    font-size: 1.2em;
-    margin: 0 auto;
-    max-width: 120px;
-    position: relative;
-    top: -5px;
-    text-align: center;
+header .row #avatar {
+    padding: 0.5em;
 }
-header #avatar {
-    float: right;
-    margin: 5px 6px 0 0;
-    position: relative;
+header .row #avatar figure {
+    margin: 0;
+    padding: 0;
 }
-header #avatar figcaption {
+header .row #avatar figure figcaption {
     background: #3771C8;
     border-radius: 0 0 2px 2px;
-    height: 10px;
+    max-height: 10px;
     position: absolute;
-    text-align: center;
-    top: 50px;
+    right: 7px;
+    top: 57px;
     width: 50px;
 }
-header #avatar figcaption a {
+header .row #avatar figure figcaption a {
     color: #E4ECF7;
     display: block;
     position: relative;
     top: -5px;
+    text-align: center;
     width: 100%;
 }
-header #avatar figcaption a:before {
+header .row #avatar figure figcaption a:before {
     content: "\e000";
     font-family: icomoon;
 }
-header #avatar img {
+header .row #avatar figure img {
+    float: right;
     width: 50px;
 }
-header #isologotype {
-    float: left;
-    margin: 15px 0 0 6px;
+header .row #isologotype {
+    padding: 1em 0.5em 0 0.5em;
 }
-header #isologotype figcaption {
-    float: right;
-    left: 2px;
-    position: relative;
-    top: -3px;
+header .row #isologotype p {
+    margin: 0;
+    padding: 0;
 }
-header #isologotype figcaption a {
-    color: #D3DaDC;
+header .row #isologotype p a {
+    color: #D3DADC;
     font-family: Lobster;
     font-size: 28px;
 }
-header #isologotype span a:after {
+header .row #isologotype p a:before {
     color: #2A7FFF;
     content: "\f0da";
     font-family: icomoon;
     font-size: 30px;
+    left: -2px;
+    position: relative;
+    top: 2px;
 }
-nav {
-    background: #535D6C;
-    margin: 0;
-    min-height: 44px;
-    padding: 0;
-    width: 100%
+header .row #isologotype p a:focus,
+header .row #isologotype p a:hover {
+    text-decoration: none;
 }
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    width: 100%;
-}
-nav ul li {
-    display: inline-block;
-    font-size: 0.9em;
-    margin: 0;
-    min-width: 20px;
-    padding: 0 0.2em;
+header .row #title {
     text-align: center;
 }
-nav ul #add-tag, nav ul #save-search {
-    background: #FF6600;
-}
-nav ul #add-tag, nav ul .previous {
-    float: left;
-}
-nav ul #add-tag a, nav ul #save-search a, nav ul .next a, nav ul .previous a {
-    color: #E2EDFF;
-    display: block;
-    font-size: 20px;
-    line-height: 44px;
-    margin: 0;
-    padding: 0;
-}
-nav ul #add-tag a:after {
-    content: "\f014";
-    font-family: icomoon;
-}
-nav ul #save-search a:after {
-    content: "\e002";
-    font-family: icomoon;
-}
-nav ul #save-search, nav ul .next {
-    float: right;
-}
-nav ul .next, nav ul .previous {
-    background: #2A7FFF;
-}
-nav ul .next a:after {
-    content: "\f0d8";
-    font-family: icomoon;
-}
-nav ul .previous a:after {
-    content: "\f0d7";
-    font-family: icomoon;
-}
-nav ul .tag {
-    background: #B7BeC8;
-    border: 0.2px solid #0E0F11;
-    border-radius: 5px;
-    margin: 0.85em 0.1em;
-    text-align: center;
-}
-nav ul .tag a {
-    color: #333;
+header .row #title h1 {
+    background: #3771C8;
+    border-radius: 5px 5px 0 0;
+    color: white;
+    font-size: 1.2em;
     font-weight: bold;
-}
-nav ul .tag.active {
-    background: white;
+    margin: 0 auto;
+    max-width: 120px;
+    padding: 0;
 }
 #elements {
     background: white;
     border: 0.5px solid black;
     border-radius: 5px;
     margin: 0 auto;
+    padding: 0.2em;
     position: relative;
     text-align: center;
     top: -5px;
-    width: 96%;
+    width: 98%;
     z-index: 10;
 }
-#elements .element {
-    margin: 0.2em;
-    padding: 0;
-    width: 100%;
-}
-#elements .element figure {
-    margin: 0;
+#elements .row .element {
     padding: 0;
 }
-#elements .element figure figcaption {
-    float: right;
-    margin: 0;
-    padding: 0;
-    text-align: left;
-    width: 85%;
-}
-#elements .element figure figcaption a {
-    color: #1A1A1A;
-    font-size: 0.9em;
-    display: block;
-    line-height: 1em;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
-#elements .element figure span a {
-    color: #3731C8;
-}
-#elements .element figure span a:after {
+#elements .row .element .element-img a:after {
     content: "\e003";
     font-family: icomoon;
     font-size: 28px;
+}
+#elements .row .element figcaption {
+    float: right;
+    line-height: 1em;
+    margin: 0;
+    padding: 0.5em 0 0 0;
+    text-align: left;
+    vertical-align: top;
+    width: 85%;
+}
+#elements .row .element figcaption a {
+    color: #1A1A1A;
 }
 #search-options {
     background: #535D6C;
@@ -206,19 +129,84 @@ nav ul .tag.active {
     margin: 0 auto;
     max-height: 10px;
     padding: 0;
-    position: relative;
     text-align: center;
     width: 63px;
     z-index: 20;
 }
-#search-options span a {
+#search-options p {
+    margin: 0;
+    padding: 0;
+}
+#search-options p a {
     color: #E7E9EB;
+    display: block;
     position: relative;
     top: -5px;
-}
-#search-options span a:after {
-    content: "\e000";
-    display: block;
-    font-family: icomoon;
     width: 100%;
+}
+#search-options p a:after {
+    content: "\e000";
+    font-family: icomoon;
+}
+#tags {
+    background: #535D6C;
+    margin: 0;
+    min-height: 44px;
+    padding: 0;
+    width: 100%
+}
+#tags ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#tags ul li.col-xs-1,
+#tags ul li.col-xs-2 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+#tags ul #add-tag, #tags ul #save-search {
+    background: #FF6600;
+}
+#tags ul #add-tag a, #tags ul #save-search a, #tags ul .arrow-left a, #tags ul .arrow-rigth a {
+    color: #E2EDFF;
+    display: block;
+    font-size: 20px;
+    line-height: 44px;
+    margin: 0;
+    padding: 0;
+}
+#tags ul #add-tag a:after {
+    content: "\f014";
+    font-family: icomoon;
+}
+#tags ul #save-search a:after {
+    content: "\e002";
+    font-family: icomoon;
+}
+#tags ul .arrow-left, #tags ul .arrow-rigth {
+    background: #2A7FFF;
+}
+#tags ul .arrow-left a:after {
+    content: "\f0d7";
+    font-family: icomoon;
+}
+#tags ul .arrow-rigth a:after {
+    content: "\f0d8";
+    font-family: icomoon;
+}
+#tags ul li.tag {
+    background: #B7BeC8;
+    border: 0.2px solid #0E0F11;
+    border-radius: 5px;
+    margin: 0.7em 0;
+    padding: 0;
+}
+#tags ul li.tag a {
+    color: #333;
+    font-weight: bold;
+}
+#tags ul li.tag.active {
+    background: white;
 }
