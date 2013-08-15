@@ -1,4 +1,4 @@
-a {
+a, a:focus, a:hover {
     text-decoration: none;
 }
 body {
@@ -9,32 +9,25 @@ footer {
     background: #373E48;
     color: white;
     font-size: 0.9em;
-    margin: 0;
     padding: 0.5em 0;
     text-align: center;
 }
 footer p {
     margin: 0;
-    padding: 0;
 }
 header {
     background: #373E48;
-    width: 100%;
 }
 header .row #avatar {
     padding: 0.5em;
-}
-header .row #avatar figure {
-    margin: 0;
-    padding: 0;
 }
 header .row #avatar figure figcaption {
     background: #3771C8;
     border-radius: 0 0 2px 2px;
     max-height: 10px;
     position: absolute;
-    right: 7px;
-    top: 57px;
+    right: 0.5em;
+    top: 4em;
     width: 50px;
 }
 header .row #avatar figure figcaption a {
@@ -54,11 +47,10 @@ header .row #avatar figure img {
     width: 50px;
 }
 header .row #isologotype {
-    padding: 1em 0.5em 0 0.5em;
+    padding: 1em 0 0 0.5em;
 }
 header .row #isologotype p {
     margin: 0;
-    padding: 0;
 }
 header .row #isologotype p a {
     color: #D3DADC;
@@ -72,11 +64,7 @@ header .row #isologotype p a:before {
     font-size: 30px;
     left: -2px;
     position: relative;
-    top: 2px;
-}
-header .row #isologotype p a:focus,
-header .row #isologotype p a:hover {
-    text-decoration: none;
+    top: 3px;
 }
 header .row #title {
     text-align: center;
@@ -96,32 +84,34 @@ header .row #title h1 {
     border: 0.5px solid black;
     border-radius: 5px;
     margin: 0 auto;
-    padding: 0.2em;
     position: relative;
     text-align: center;
     top: -5px;
     width: 98%;
     z-index: 10;
 }
-#elements .row .element {
+#elements .element {
+    padding: 0.2em;
+}
+#elements .element .row {
+    display: block;
+    margin: 0;
+    text-align: center;
+}
+#elements .element .row .element-img {
+    margin: 0;
     padding: 0;
 }
-#elements .row .element .element-img a:after {
+#elements .element .row .element-img:before {
     content: "\e003";
     font-family: icomoon;
-    font-size: 28px;
+    font-size: 32px;
 }
-#elements .row .element figcaption {
-    float: right;
+#elements .element .row .element-name {
+    color: #1A1A1A;
     line-height: 1em;
     margin: 0;
-    padding: 0.5em 0 0 0;
-    text-align: left;
-    vertical-align: top;
-    width: 85%;
-}
-#elements .row .element figcaption a {
-    color: #1A1A1A;
+    padding: 0;
 }
 #search-options {
     background: #535D6C;
@@ -135,7 +125,6 @@ header .row #title h1 {
 }
 #search-options p {
     margin: 0;
-    padding: 0;
 }
 #search-options p a {
     color: #E7E9EB;
@@ -144,25 +133,20 @@ header .row #title h1 {
     top: -5px;
     width: 100%;
 }
-#search-options p a:after {
+#search-options p a:before {
     content: "\e000";
     font-family: icomoon;
 }
 #tags {
     background: #535D6C;
-    margin: 0;
     min-height: 44px;
-    padding: 0;
-    width: 100%
 }
 #tags ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-#tags ul li.col-xs-1,
-#tags ul li.col-xs-2 {
-    margin: 0;
+#tags ul li {
     padding: 0;
     text-align: center;
 }
@@ -177,36 +161,35 @@ header .row #title h1 {
     margin: 0;
     padding: 0;
 }
-#tags ul #add-tag a:after {
+#tags ul #add-tag a:before {
     content: "\f014";
     font-family: icomoon;
 }
-#tags ul #save-search a:after {
+#tags ul #save-search a:before {
     content: "\e002";
     font-family: icomoon;
 }
 #tags ul .arrow-left, #tags ul .arrow-rigth {
     background: #2A7FFF;
 }
-#tags ul .arrow-left a:after {
+#tags ul .arrow-left a:before {
     content: "\f0d7";
     font-family: icomoon;
 }
-#tags ul .arrow-rigth a:after {
+#tags ul .arrow-rigth a:before {
     content: "\f0d8";
     font-family: icomoon;
 }
-#tags ul li.tag {
+#tags ul .tag {
     background: #B7BeC8;
     border: 0.2px solid #0E0F11;
     border-radius: 5px;
     margin: 0.7em 0;
-    padding: 0;
 }
-#tags ul li.tag a {
+#tags ul .tag a {
     color: #333;
     font-weight: bold;
 }
-#tags ul li.tag.active {
+#tags ul .tag.active {
     background: white;
 }
