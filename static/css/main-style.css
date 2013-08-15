@@ -21,6 +21,9 @@ header {
 header .row #avatar {
     padding: 0.5em;
 }
+header .row #avatar figure {
+    float: right;
+}
 header .row #avatar figure figcaption {
     background: #3771C8;
     border-radius: 0 0 2px 2px;
@@ -34,8 +37,8 @@ header .row #avatar figure figcaption a {
     color: #E4ECF7;
     display: block;
     position: relative;
-    top: -5px;
     text-align: center;
+    top: -5px;
     width: 100%;
 }
 header .row #avatar figure figcaption a:before {
@@ -43,21 +46,17 @@ header .row #avatar figure figcaption a:before {
     font-family: icomoon;
 }
 header .row #avatar figure img {
-    float: right;
     width: 50px;
 }
 header .row #isologotype {
     padding: 1em 0 0 0.5em;
 }
-header .row #isologotype p {
-    margin: 0;
-}
-header .row #isologotype p a {
+header .row #isologotype a {
     color: #D3DADC;
     font-family: Lobster;
     font-size: 28px;
 }
-header .row #isologotype p a:before {
+header .row #isologotype a:before {
     color: #2A7FFF;
     content: "\f0da";
     font-family: icomoon;
@@ -124,17 +123,14 @@ header .row #title h1 {
     width: 63px;
     z-index: 20;
 }
-#search-options p {
-    margin: 0;
-}
-#search-options p a {
+#search-options a {
     color: #E7E9EB;
     display: block;
     position: relative;
     top: -5px;
     width: 100%;
 }
-#search-options p a:before {
+#search-options a:before {
     content: "\e000";
     font-family: icomoon;
 }
@@ -151,16 +147,19 @@ header .row #title h1 {
     padding: 0;
     text-align: center;
 }
+#tags ul li a {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
 #tags ul #add-tag, #tags ul #save-search {
     background: #FF6600;
 }
 #tags ul #add-tag a, #tags ul #save-search a, #tags ul .arrow-left a, #tags ul .arrow-rigth a {
     color: #E2EDFF;
-    display: block;
     font-size: 20px;
     line-height: 44px;
-    margin: 0;
-    padding: 0;
 }
 #tags ul #add-tag a:before {
     content: "\f014";
