@@ -38,10 +38,9 @@
             <ul class="row">
                 <li id="add-tag" class="col-xs-1 col-sm-1"><a href="#"> </a></li>
                 <li class="arrow-left col-xs-1 col-sm-1"><a href="#"> </a></li>
-                <li class="tag active col-xs-2 col-sm-1"><a href="#">Photos</a></li>
-                <li class="tag col-xs-2 col-sm-1"><a href="#">Work</a></li>
-                <li class="tag active col-xs-2 col-sm-1"><a href="#">Family</a></li>
-                <li class="tag active col-xs-2 col-sm-1"><a href="#">Travel</a></li>
+                {% for tag in tags %}
+                <li class="tag col-xs-2 col-sm-1"><a href="#tag-{{ tag.id }}">{{ tag.name }}</a></li>
+                {% endfor %}
                 <li class="arrow-rigth col-xs-1 col-sm-1 col-sm-offset-4"><a href="#"> </a></li>
                 <li id="save-search" class="col-xs-1 col-sm-1"><a href="#"> </a></li>
             </ul>
@@ -53,56 +52,15 @@
             </div>
         </div>
 
-        <section id="elements" class="row">
-            <article class="element col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <a class="row" href="#">
-                    <p class="element-img col-xs-12 col-sm-2 col-md-1"></p>
-                    <p class="element-name col-xs-12 col-sm-10 col-md-11">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                </a>
-            </article>
-
-            <article class="element col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <a class="row" href="#">
-                    <p class="element-img col-xs-12 col-sm-2 col-md-1"></p>
-                    <p class="element-name col-xs-12 col-sm-10 col-md-11">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                </a>
-            </article>
-
-            <article class="element col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <a class="row" href="#">
-                    <p class="element-img col-xs-12 col-sm-2 col-md-1"></p>
-                    <p class="element-name col-xs-12 col-sm-10 col-md-11">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                </a>
-            </article>
-
-            <article class="element col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <a class="row" href="#">
-                    <p class="element-img col-xs-12 col-sm-2 col-md-1"></p>
-                    <p class="element-name col-xs-12 col-sm-10 col-md-11">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                </a>
-            </article>
-
-            <article class="element col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <a class="row" href="#">
-                    <p class="element-img col-xs-12 col-sm-2 col-md-1"></p>
-                    <p class="element-name col-xs-12 col-sm-10 col-md-11">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                </a>
-            </article>
-
-            <article class="element col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <a class="row" href="#">
-                    <p class="element-img col-xs-12 col-sm-2 col-md-1"></p>
-                    <p class="element-name col-xs-12 col-sm-10 col-md-11">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                </a>
-            </article>
-        </section>
+        <section id="main-section" class="row"> </section>
 
         <footer>
-            <p>Power by Flask &amp; Boostrap</p>
+            <p>Power by Flask &amp; Bootstrap</p>
             <p>Nodsine's Technologies</p>
         </footer>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/script.js" type="text/javascript" charset="utf-8"></script>
     </body>
 </html>

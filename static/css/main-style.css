@@ -78,11 +78,12 @@ header .row #title h1 {
     max-width: 120px;
     padding: 0;
 }
-#elements {
+#main-section {
     background: white;
     border: 0.5px solid black;
     border-radius: 5px;
     margin: 0 auto;
+    min-height: 60px;
     padding: 0.2em;
     position: relative;
     text-align: center;
@@ -90,24 +91,24 @@ header .row #title h1 {
     width: 98%;
     z-index: 10;
 }
-#elements .element {
+#main-section .resource {
     padding: 0.2em;
 }
-#elements .element .row {
+#main-section .resource .row {
     display: block;
     margin: 0;
     text-align: center;
 }
-#elements .element .row .element-img {
+#main-section .resource .row .resource-img {
     margin: 0;
     padding: 0;
 }
-#elements .element .row .element-img:before {
+#main-section .resource .row .resource-img:before {
     content: "\e003";
     font-family: icomoon;
     font-size: 32px;
 }
-#elements .element .row .element-name {
+#main-section .resource .row .resource-name {
     color: #1A1A1A;
     line-height: 1em;
     margin: 0;
