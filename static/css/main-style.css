@@ -154,15 +154,15 @@ header .row #title h1 {
     padding: 0;
     width: 100%;
 }
-#tags ul #add-tag, #tags ul #save-search {
+#tags ul #add-new-tag, #tags ul #save-search {
     background: #FF6600;
 }
-#tags ul #add-tag a, #tags ul #save-search a, #tags ul .arrow-left a, #tags ul .arrow-rigth a {
+#tags ul #add-new-tag a, #tags ul #save-search a, #tags ul .arrow-left a, #tags ul .arrow-right a {
     color: #E2EDFF;
     font-size: 20px;
     line-height: 44px;
 }
-#tags ul #add-tag a:before {
+#tags ul #add-new-tag a:before {
     content: "\f014";
     font-family: icomoon;
 }
@@ -170,14 +170,14 @@ header .row #title h1 {
     content: "\e002";
     font-family: icomoon;
 }
-#tags ul .arrow-left, #tags ul .arrow-rigth {
+#tags ul .arrow-left, #tags ul .arrow-right {
     background: #2A7FFF;
 }
 #tags ul .arrow-left a:before {
     content: "\f0d7";
     font-family: icomoon;
 }
-#tags ul .arrow-rigth a:before {
+#tags ul .arrow-right a:before {
     content: "\f0d8";
     font-family: icomoon;
 }
