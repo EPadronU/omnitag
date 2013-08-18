@@ -8,37 +8,42 @@ $(document).ready(function() {
     });
 
     $("#add-new-tag").click(function() {
-        var prompt_states = {
-            state0: {
-                title: "Give your new tag a name",
-                html: '<input id="new-tag-name" type="text" name="new-tag-name" />',
-                buttons: {"Add": true, "Cancel": false},
-                focus: ":input:first",
-                submit: function(event, value, message, formVals) {
-                    if(value) {
-                        $.ajax({
-                            type: "POST",
-                            url: "/add-new-tag",
-                            contentType: "application/json",
-                            data: JSON.stringify(formVals["new-tag-name"]),
-                        }).done(function(data) {
-                            if(data.status == 'success') {
-                                $("#tags ul .tag:first").before(data['tag-html']);
-                                refresh_tags()
-                            }
-                        });
-                    }
-                }
-            }
-        };
+        $("#add-new-tag-dialog").dialog("open");
+    });
 
-        var prompt_options = {
-            classes: {
-                box: "row",
-                prompt: "col-xs-6 col-sm-4"
+    $("#add-new-tag-dialog").dialog({
+        autoOpen: false,
+        buttons: {
+            "Add": function() {
+                var $new_tag_name = $("#new-tag-name").val();
+                var $dialog = $(this);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/add-new-tag",
+                    contentType: "application/json",
+                    data: JSON.stringify($new_tag_name),
+                }).done(function(data) {
+                    if(data.status == 'success') {
+                        $("#tags ul .tag:first").before(
+                            $(data['tag-html']).click(function() {
+                                $(this).toggleClass('active')
+                                refresh_resources();
+                            })
+                        );
+                        $dialog.dialog("close");
+                        refresh_tags();
+                    } else {
+                        $("#add-new-tag-dialog .error").html("Duplicated tag")
+                    }
+                });
+            },
+            Cancel: function() {
+                $(this).dialog("close");
             }
-        };
-        $.prompt(prompt_states, prompt_options);
+        },
+        closeOnEspace: true,
+        modal: true
     });
 
     $("#tags ul .arrow-left").click(previous_group_of_tags);

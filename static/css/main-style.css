@@ -194,3 +194,45 @@ header .row #title h1 {
 #tags ul .tag.active {
     background: white;
 }
+.error {
+    background: red;
+    color: white;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin: 0.2em auto;
+    width: 60%;
+}
+.ui-dialog {
+    background: #535D6C;
+    border: 2px solid #333;
+    border-radius: 10px;
+    margin: 0 auto;
+    opacity: 0.95;
+    padding: 0.5em;
+    text-align: center;
+    width: 60%;
+    z-index: 999;
+}
+.ui-dialog button {
+    background: #FF6600;
+    border: 0.5px solid #333;
+    border-radius: 8px;
+    color: #E2EDFF;
+    font-weight: bold;
+    margin: 0 0.5em;
+    min-width: 80px;
+}
+.ui-dialog #add-new-tag-dialog input {
+    border: 0.5px dotted white;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+.ui-dialog #add-new-tag-dialog label {
+    color: white;
+    font-size: 1.2em;
+    text-shadow: 0.5px 3px 2px black;
+}
+.ui-dialog .ui-dialog-titlebar-close {
+    display: none;
+}
