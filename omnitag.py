@@ -98,7 +98,7 @@ def add_new_tag():
 @app.route("/explorer", methods=['GET', 'POST'])
 def explorer():
     if request.method == 'GET':
-        return render_template("main-view.html", tags=Tag.select())
+        return render_template("explorer.html", tags=Tag.select())
 
     elif request.method == 'POST':
         tags_ids = json.loads(request.data)

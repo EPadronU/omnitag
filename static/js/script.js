@@ -40,6 +40,8 @@ $(document).ready(function() {
             },
             Cancel: function() {
                 $(this).dialog("close");
+                $("#add-new-tag-dialog #new-tag-name").val("");
+                $("#add-new-tag-dialog .error").html("");
             }
         },
         closeOnEspace: true,
@@ -117,7 +119,7 @@ function refresh_resources() {
         contentType: "application/json",
         data: JSON.stringify(tags_ids),
     }).done(function(data) {
-        $("#main-section").html(data);
+        $("#resources").html(data);
     });
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

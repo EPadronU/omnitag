@@ -78,7 +78,7 @@ header .row #title h1 {
     max-width: 120px;
     padding: 0;
 }
-#main-section {
+#resources {
     background: white;
     border: 0.5px solid black;
     border-radius: 5px;
@@ -91,24 +91,24 @@ header .row #title h1 {
     width: 98%;
     z-index: 10;
 }
-#main-section .resource {
+#resources .resource {
     padding: 0.2em;
 }
-#main-section .resource .row {
+#resources .resource .row {
     display: block;
     margin: 0;
     text-align: center;
 }
-#main-section .resource .row .resource-img {
+#resources .resource .row .resource-img {
     margin: 0;
     padding: 0;
 }
-#main-section .resource .row .resource-img:before {
+#resources .resource .row .resource-img:before {
     content: "\e003";
     font-family: icomoon;
     font-size: 32px;
 }
-#main-section .resource .row .resource-name {
+#resources .resource .row .resource-name {
     color: #1A1A1A;
     line-height: 1em;
     margin: 0;

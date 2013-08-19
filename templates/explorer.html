@@ -1,0 +1,16 @@
+{% extends "main-view.html" %}
+
+{% block title %}
+        <h1>Explorer</h1>
+{% endblock %}
+
+{% block content %}
+        <section class="row" id="resources">
+        </section>
+
+        <div id="add-new-tag-dialog">
+            <label for="new-tag-name">Give your new tag a name</label>
+            <input type="text" id="new-tag-name" name="new-tag-name" value="" />
+            <p class="error"></p>
+        </div>
+{% endblock %}

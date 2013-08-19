@@ -29,7 +29,7 @@
 
             <div class="row">
                 <div class="col-xs-12" id="title">
-                    <h1>Explorer</h1>
+                    {% block title %} {% endblock %}
                 </div>
             </div>
         </header>
@@ -53,19 +53,12 @@
             </div>
         </div>
 
-        <section class="row" id="main-section">
-        </section>
+        {% block content %} {% endblock %}
 
         <footer>
             <p>Power by Flask &amp; Bootstrap</p>
             <p>Nodsine's Technologies</p>
         </footer>
-
-        <div id="add-new-tag-dialog">
-            <label for="new-tag-name">Give your new tag a name</label>
-            <input type="text" id="new-tag-name" name="new-tag-name" value="" />
-            <p class="error"></p>
-        </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
