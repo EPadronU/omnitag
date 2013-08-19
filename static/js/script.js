@@ -51,6 +51,15 @@ $(document).ready(function() {
     $("#tags ul .arrow-left").click(previous_group_of_tags);
 
     $("#tags ul .arrow-right").click(next_group_of_tags);
+
+    $("#new-files").click(function() {
+        $.ajax({
+            type: "GET",
+            url: "/new-files",
+        }).done(function(data) {
+            $("#resources").html(data);
+        });
+    });
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     refresh_tags();

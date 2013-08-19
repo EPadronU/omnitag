@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="/static/css/icomoon.css" type="text/css" media="all" />
         <link rel="stylesheet" href="/static/css/main-style.css" type="text/css" media="all" />
         <link rel="stylesheet" href="/static/css/responsive.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="/static/css/animate.css" type="text/css" media="all" />
     </head>
 
     <body>
@@ -22,27 +23,36 @@
                     <figure>
                         <img src="/static/img/avatar.jpg" alt="User's avatar" />
 
-                        <figcaption><a href="#"> </a></figcaption>
+                        <figcaption>
+                            <div class="dropdown" id="account-options">
+                                <a data-toggle="dropdown" href="#"> </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation"><a id="new-files" role="menuitem" tabindex="-1" href="#">New files</a></li>
+                                    <li role="presentation"><a id="settings" role="menuitem" tabindex="-1" href="#">Settings</a></li>
+                                    <li role="presentation"><a id="logout" role="menuitem" tabindex="-1" href="#">Log out</a></li>
+                                </ul>
+                            </div>
+                        </figcaption>
                     </figure>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xs-12" id="title">
-                    {% block title %} {% endblock %}
+                    <h1>{% block title %} {% endblock %}</h1>
                 </div>
             </div>
         </header>
 
         <nav id="tags">
             <ul class="row">
-                <li class="col-xs-1 col-sm-1" id="add-new-tag"><a href="#"> </a></li>
-                <li class="arrow-left col-xs-1 col-sm-1"><a href="#"> </a></li>
+                <li class="col-xs-1 col-sm-1" id="add-new-tag"><a class="animated" href="#"> </a></li>
+                <li class="arrow-left col-xs-1 col-sm-1"><a class="animated" href="#"> </a></li>
                 {% for tag in tags %}
-                <li class="tag col-xs-2 col-sm-1"><a href="#tag-{{ tag.id }}">{{ tag.name }}</a></li>
+                <li class="tag col-xs-2 col-sm-1"><a class="animated" href="#tag-{{ tag.id }}">{{ tag.name }}</a></li>
                 {% endfor %}
-                <li class="arrow-right col-xs-1 col-sm-1"><a href="#"> </a></li>
-                <li class="col-xs-1 col-sm-1" id="save-search"><a href="#"> </a></li>
+                <li class="arrow-right col-xs-1 col-sm-1"><a class="animated" href="#"> </a></li>
+                <li class="col-xs-1 col-sm-1" id="save-search"><a class="animated" href="#"> </a></li>
             </ul>
         </nav>
 
@@ -59,6 +69,12 @@
             <p>Power by Flask &amp; Bootstrap</p>
             <p>Nodsine's Technologies</p>
         </footer>
+
+        <div id="add-new-tag-dialog">
+            <label for="new-tag-name">Give your new tag a name</label>
+            <input type="text" id="new-tag-name" name="new-tag-name" value="" />
+            <p class="error"></p>
+        </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>

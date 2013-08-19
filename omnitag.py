@@ -95,6 +95,12 @@ def add_new_tag():
 
     return jsonify({"status": "failure"})
 
+@app.route("/new-files")
+def new_files():
+    resources = [row.resource for row in TagResource.select()]
+    nfiles = Resource.select().where(~(Resource.id << resources))
+    return render_template("resources.html", resources=nfiles)
+
 @app.route("/explorer", methods=['GET', 'POST'])
 def explorer():
     if request.method == 'GET':

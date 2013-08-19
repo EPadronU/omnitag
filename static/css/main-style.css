@@ -19,7 +19,7 @@ header {
     background: #373E48;
 }
 header .row #avatar {
-    padding: 0.5em;
+    padding: 0.5em 1.5em;
 }
 header .row #avatar figure {
     float: right;
@@ -29,11 +29,32 @@ header .row #avatar figure figcaption {
     border-radius: 0 0 2px 2px;
     max-height: 10px;
     position: absolute;
-    right: 0.5em;
+    right: 1.5em;
     top: 4em;
     width: 50px;
 }
-header .row #avatar figure figcaption a {
+header .row #avatar figure figcaption #account-options .dropdown-menu {
+    background: #535D6C;
+    left: -10px;
+    margin: 0;
+    min-width: 0;
+    padding: 0;
+    text-align: center;
+    width: 70px;
+}
+header .row #avatar figure figcaption #account-options .dropdown-menu li a {
+    color: white;
+    display: block;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin: 0;
+    padding: 0.5em 0;
+    width: 100%;
+}
+header .row #avatar figure figcaption #account-options .dropdown-menu li a:hover {
+    background: #3771C8;
+}
+header .row #avatar figure figcaption .dropdown > a {
     color: #E4ECF7;
     display: block;
     position: relative;
@@ -41,7 +62,7 @@ header .row #avatar figure figcaption a {
     top: -5px;
     width: 100%;
 }
-header .row #avatar figure figcaption a:before {
+header .row #avatar figure figcaption .dropdown > a:before {
     content: "\e000";
     font-family: icomoon;
 }
@@ -49,7 +70,7 @@ header .row #avatar figure img {
     width: 50px;
 }
 header .row #isologotype {
-    padding: 1em 0 0 0.5em;
+    padding: 1em 0 0 1.5em;
 }
 header .row #isologotype a {
     color: #D3DADC;

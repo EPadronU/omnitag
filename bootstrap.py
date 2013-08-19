@@ -17,6 +17,10 @@ report = Resource.create(name="report.odt"); report.save()
 review = Resource.create(name="review.odt"); review.save()
 letter = Resource.create(name="letter.odt"); letter.save()
 
+Resource.create(name="index.html").save()
+Resource.create(name="style.css").save()
+Resource.create(name="script.js").save()
+
 family = Tag.create(name="family"); family.save()
 photos = Tag.create(name="photos"); photos.save()
 travel = Tag.create(name="travel"); travel.save()
