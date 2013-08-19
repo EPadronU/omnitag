@@ -46,7 +46,7 @@
 
         <nav id="tags">
             <ul class="row">
-                <li class="col-xs-1 col-sm-1" id="add-new-tag"><a class="animated" href="#"> </a></li>
+                <li class="col-xs-1 col-sm-1" id="add-new-tag"><a class="animated" data-toggle="modal" href="#add-new-tag-modal"> </a></li>
                 <li class="arrow-left col-xs-1 col-sm-1"><a class="animated" href="#"> </a></li>
                 {% for tag in tags %}
                 <li class="tag col-xs-2 col-sm-1"><a class="animated" href="#tag-{{ tag.id }}">{{ tag.name }}</a></li>
@@ -70,11 +70,24 @@
             <p>Nodsine's Technologies</p>
         </footer>
 
-        <div id="add-new-tag-dialog">
-            <label for="new-tag-name">Give your new tag a name</label>
-            <input type="text" id="new-tag-name" name="new-tag-name" value="" />
-            <p class="error"></p>
-        </div>
+        <div class="modal fade" id="add-new-tag-modal" tabindex="-1" role="dialog" aria-labelledby="new-tag" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close mycls" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Give your new tag a name</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="new-tag-name" id="new-tag-name" value="" />
+                        <p class="error"> </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default mycls" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary save">Save</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>

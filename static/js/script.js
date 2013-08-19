@@ -7,45 +7,38 @@ $(document).ready(function() {
         refresh_resources();
     });
 
-    $("#add-new-tag").click(function() {
-        $("#add-new-tag-dialog").dialog("open");
+    $("#add-new-tag-modal").on('hidden.bs.modal', function() {
+        $("#add-new-tag-modal #new-tag-name").val("");
+        $("#add-new-tag-modal .error").html("");
     });
 
-    $("#add-new-tag-dialog").dialog({
-        autoOpen: false,
-        buttons: {
-            "Add": function() {
-                var $new_tag_name = $("#new-tag-name").val();
-                var $dialog = $(this);
+    $("#add-new-tag-modal button.mycls").click(function() {
+        $("#add-new-tag-modal").modal("hide");
+    });
 
-                $.ajax({
-                    type: "POST",
-                    url: "/add-new-tag",
-                    contentType: "application/json",
-                    data: JSON.stringify($new_tag_name),
-                }).done(function(data) {
-                    if(data.status == 'success') {
-                        $("#tags ul .tag:first").before(
-                            $(data['tag-html']).click(function() {
-                                $(this).toggleClass('active')
-                                refresh_resources();
-                            })
-                        );
-                        $dialog.dialog("close");
-                        refresh_tags();
-                    } else {
-                        $("#add-new-tag-dialog .error").html("Duplicated tag")
-                    }
-                });
-            },
-            Cancel: function() {
-                $(this).dialog("close");
-                $("#add-new-tag-dialog #new-tag-name").val("");
-                $("#add-new-tag-dialog .error").html("");
+    $("#add-new-tag-modal button.save").click(function() {
+        var tag_name = $("#add-new-tag-modal #new-tag-name").val()
+
+        if(!tag_name) { return }
+
+        $.ajax({
+            contentType: 'application/json',
+            data: JSON.stringify(tag_name),
+            type: 'POST',
+            url: '/add-new-tag'
+        }).done(function(json) {
+            if(json.status === 'success') {
+                $("#tags ul .tag:first").before(
+                    $(json['tag-html']).click(function() {
+                        $(this).toggleClass('active');
+                    })
+                );
+                $(this).modal("hide");
+
+            } else {
+                $("#add-new-tag-modal .error").html("Duplicated tag");
             }
-        },
-        closeOnEspace: true,
-        modal: true
+        });
     });
 
     $("#tags ul .arrow-left").click(previous_group_of_tags);
