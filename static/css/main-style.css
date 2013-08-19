@@ -102,6 +102,37 @@ header .row #title h1 {
     max-width: 120px;
     padding: 0;
 }
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul li {
+    padding: 0;
+    text-align: center;
+}
+ul li a {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+ul .arrow-left, ul .arrow-right {
+    background: #2A7FFF;
+}
+ul .arrow-left a, ul .arrow-right a, #tags ul #add-new-tag a, #tags ul #save-search a {
+    color: #E2EDFF;
+    font-size: 20px;
+    line-height: 44px;
+}
+ul .arrow-left a:before {
+    content: "\f0d7";
+    font-family: icomoon;
+}
+ul .arrow-right a:before {
+    content: "\f0d8";
+    font-family: icomoon;
+}
 #resources {
     background: white;
     border: 0.5px solid black;
@@ -163,28 +194,8 @@ header .row #title h1 {
     background: #535D6C;
     min-height: 44px;
 }
-#tags ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-#tags ul li {
-    padding: 0;
-    text-align: center;
-}
-#tags ul li a {
-    display: block;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
 #tags ul #add-new-tag, #tags ul #save-search {
     background: #FF6600;
-}
-#tags ul #add-new-tag a, #tags ul #save-search a, #tags ul .arrow-left a, #tags ul .arrow-right a {
-    color: #E2EDFF;
-    font-size: 20px;
-    line-height: 44px;
 }
 #tags ul #add-new-tag a:before {
     content: "\f014";
@@ -192,17 +203,6 @@ header .row #title h1 {
 }
 #tags ul #save-search a:before {
     content: "\e002";
-    font-family: icomoon;
-}
-#tags ul .arrow-left, #tags ul .arrow-right {
-    background: #2A7FFF;
-}
-#tags ul .arrow-left a:before {
-    content: "\f0d7";
-    font-family: icomoon;
-}
-#tags ul .arrow-right a:before {
-    content: "\f0d8";
     font-family: icomoon;
 }
 #tags ul .tag {
@@ -217,6 +217,9 @@ header .row #title h1 {
 }
 #tags ul .tag.active {
     background: white;
+}
+.col-sm-1, .col-sm-2, .col-xs-1, .col-xs-2 {
+    padding: 0;
 }
 .error {
     background: red;

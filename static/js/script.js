@@ -33,12 +33,17 @@ $(document).ready(function() {
                         $(this).toggleClass('active');
                     })
                 );
-                $(this).modal("hide");
+                $("#add-new-tag-modal").modal("hide");
+                refresh_tags();
 
             } else {
                 $("#add-new-tag-modal .error").html("Duplicated tag");
             }
         });
+    });
+
+    $("#search-options-modal button.mycls").click(function() {
+        $("#search-options-modal").modal("hide");
     });
 
     $("#tags ul .arrow-left").click(previous_group_of_tags);
