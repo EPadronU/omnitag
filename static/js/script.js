@@ -91,7 +91,7 @@ function refresh_tags() {
     if($(window).width() >= 720) {
         amount_of_tags_to_show = 8;
     } else {
-        amount_of_tags_to_show = 4;
+        amount_of_tags_to_show = 2;
     }
 
     $tags.each(function(index) {
@@ -104,7 +104,7 @@ function refresh_tags() {
 
     var $arrow_right = $("#tags ul .arrow-right");
     $arrow_right.removeClass();
-    $arrow_right.addClass("arrow-right col-xs-1 col-sm-1");
+    $arrow_right.addClass("arrow-right col-xs-2 col-sm-1");
 
     if($tags.length - current_tag_index < amount_of_tags_to_show) {
         var offset = amount_of_tags_to_show - ($tags.length - current_tag_index);

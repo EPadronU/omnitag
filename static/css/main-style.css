@@ -7,11 +7,9 @@ body {
 }
 footer {
     background: #373E48;
-    bottom: 0;
     color: white;
     font-size: 0.9em;
     padding: 0.5em 0;
-    position: absolute;
     text-align: center;
     width: 100%;
 }
@@ -21,59 +19,61 @@ footer p {
 header {
     background: #373E48;
 }
+header h1 {
+    background: #3771C8;
+    border-radius: 5px 5px 0 0;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0 auto;
+    max-width: 120px;
+    padding: 0.2em;
+    text-align: center;
+}
 header .row #avatar {
-    padding: 0.5em 1.5em;
+    padding: 0.5em 1em 0 0;
 }
 header .row #avatar figure {
     float: right;
 }
-header .row #avatar figure figcaption {
-    background: #3771C8;
-    border-radius: 0 0 2px 2px;
-    max-height: 10px;
-    position: absolute;
-    right: 1.5em;
-    top: 4em;
+header .row #avatar figure img {
     width: 50px;
 }
-header .row #avatar figure figcaption #account-options .dropdown-menu {
+header .row #avatar figure #account-options {
+    background: #3771C8;
+    border-radius: 0 0 2px 2px;
+}
+header .row #avatar figure #account-options > a {
+    color: #E4ECF7;
+    display: block;
+    line-height: 15px;
+    text-align: center;
+}
+header .row #avatar figure #account-options > a:before {
+    content: "\e000";
+    font-family: icomoon;
+}
+header .row #avatar figure #account-options .dropdown-menu {
     background: #535D6C;
     left: -10px;
-    margin: 0;
+    margin: 0.5em 0 0 0;
     min-width: 0;
     padding: 0;
     text-align: center;
     width: 70px;
 }
-header .row #avatar figure figcaption #account-options .dropdown-menu li a {
+header .row #avatar figure #account-options .dropdown-menu li a {
     color: white;
     display: block;
     font-size: 0.8em;
     font-weight: bold;
-    margin: 0;
     padding: 0.5em 0;
-    width: 100%;
 }
-header .row #avatar figure figcaption #account-options .dropdown-menu li a:hover {
+header .row #avatar figure #account-options .dropdown-menu li a:hover {
     background: #3771C8;
 }
-header .row #avatar figure figcaption .dropdown > a {
-    color: #E4ECF7;
-    display: block;
-    position: relative;
-    text-align: center;
-    top: -5px;
-    width: 100%;
-}
-header .row #avatar figure figcaption .dropdown > a:before {
-    content: "\e000";
-    font-family: icomoon;
-}
-header .row #avatar figure img {
-    width: 50px;
-}
 header .row #isologotype {
-    padding: 1em 0 0 1.5em;
+    padding: 1em 0 0 1em;
 }
 header .row #isologotype a {
     color: #D3DADC;
@@ -89,47 +89,46 @@ header .row #isologotype a:before {
     position: relative;
     top: 3px;
 }
-header .row #title {
-    text-align: center;
+nav {
+    background: #535D6C;
+    min-height: 44px;
 }
-header .row #title h1 {
-    background: #3771C8;
-    border-radius: 5px 5px 0 0;
-    color: white;
-    font-size: 1.2em;
-    font-weight: bold;
-    margin: 0 auto;
-    max-width: 120px;
-    padding: 0;
-}
-ul {
+nav .row {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-ul li {
+nav .row li {
     padding: 0;
+}
+nav .row li a {
+    display: block;
     text-align: center;
 }
-ul li a {
-    display: block;
-    margin: 0;
-    padding: 0;
-    width: 100%;
+nav .row #add-new-tag, nav .row #save-search {
+    background: #FF6600;
 }
-ul .arrow-left, ul .arrow-right {
-    background: #2A7FFF;
-}
-ul .arrow-left a, ul .arrow-right a, #tags ul #add-new-tag a, #tags ul #save-search a {
+nav .row #add-new-tag a, nav .row #save-search a, nav .row .arrow-left a, nav .row .arrow-right a {
     color: #E2EDFF;
     font-size: 20px;
     line-height: 44px;
 }
-ul .arrow-left a:before {
+nav .row #add-new-tag a:before {
+    content: "\f014";
+    font-family: icomoon;
+}
+nav .row #save-search a:before {
+    content: "\e002";
+    font-family: icomoon;
+}
+nav .row .arrow-left, nav .row .arrow-right {
+    background: #2A7FFF;
+}
+nav .row .arrow-left a:before {
     content: "\f0d7";
     font-family: icomoon;
 }
-ul .arrow-right a:before {
+nav .row .arrow-right a:before {
     content: "\f0d8";
     font-family: icomoon;
 }
@@ -137,12 +136,12 @@ ul .arrow-right a:before {
     background: white;
     border: 0.5px solid black;
     border-radius: 5px;
-    margin: 0 auto 50px auto;
+    margin: 0 auto;
     min-height: 60px;
     padding: 0.2em;
     position: relative;
     text-align: center;
-    top: -5px;
+    top: -8px;
     width: 98%;
     z-index: 10;
 }
@@ -173,61 +172,26 @@ ul .arrow-right a:before {
     background: #535D6C;
     border-radius: 0 0 4px 4px;
     margin: 0 auto;
-    max-height: 10px;
-    padding: 0;
+    position: relative;
     text-align: center;
-    width: 63px;
+    width: 70px;
     z-index: 20;
 }
 #search-options a {
     color: #E7E9EB;
     display: block;
-    position: relative;
-    top: -5px;
-    width: 100%;
+    line-height: 15px;
 }
 #search-options a:before {
     content: "\e000";
     font-family: icomoon;
 }
-#tags {
-    background: #535D6C;
-    min-height: 44px;
-}
-#tags ul #add-new-tag, #tags ul #save-search {
-    background: #FF6600;
-}
-#tags ul #add-new-tag a:before {
-    content: "\f014";
-    font-family: icomoon;
-}
-#tags ul #save-search a:before {
-    content: "\e002";
-    font-family: icomoon;
-}
-#tags ul .tag {
-    background: #B7BeC8;
-    border: 0.2px solid #0E0F11;
-    border-radius: 5px;
-    margin: 0.7em 0;
-}
-#tags ul .tag a {
-    color: #333;
-    font-weight: bold;
-}
-#tags ul .tag.active {
-    background: white;
-}
-.col-sm-1, .col-sm-2, .col-xs-1, .col-xs-2 {
-    padding: 0;
-}
 .error {
     background: red;
     color: white;
     font-size: 0.9em;
-    font-weight: bold;
     margin: 0.2em auto;
-    opacity: 0.7;
+    opacity: 0.9;
     width: 60%;
 }
 .modal-content {
@@ -237,9 +201,9 @@ ul .arrow-right a:before {
     text-align: center;
 }
 .modal-content input {
-    border: 1px dotted grey;
+    border: none;
     border-radius: 10px;
-    box-shadow: 0.8px 2px 2px black;
+    box-shadow: 0.2px 1px 4px black;
     text-align: center;
 }
 .modal-content .modal-footer {
@@ -255,4 +219,17 @@ ul .arrow-right a:before {
 }
 .modal-content .modal-title {
     text-shadow: 0.5px 1px 1px black;
+}
+.row .tag, .row .search {
+    background: #B7BeC8;
+    border: 0.2px solid #0E0F11;
+    border-radius: 5px;
+    margin: 0.7em 0;
+}
+.row .tag a, .row .search a {
+    color: #333;
+    font-weight: bold;
+}
+.row .tag.active, .row .search.active {
+    background: white;
 }
