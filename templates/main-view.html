@@ -47,7 +47,7 @@
                 <li class="tag col-xs-2 col-sm-1"><a class="animated" href="#tag-{{ tag.id }}">{{ tag.name }}</a></li>
                 {% endfor %}
                 <li class="arrow-right col-xs-2 col-sm-1"><a class="animated" href="#"> </a></li>
-                <li class="col-xs-2 col-sm-1" id="save-search"><a class="animated" href="#"> </a></li>
+                <li class="col-xs-2 col-sm-1" id="save-search"><a class="animated" data-toggle="modal" href="#save-search-modal"> </a></li>
             </ul>
         </nav>
 
@@ -82,6 +82,25 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <div class="modal fade" id="save-search-modal" tabindex="-1" role="dialog" aria-labelledby="save-search" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close mycls" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Save the current search as...</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="new-search-name" id="new-search-name" value="" />
+                        <p class="error"> </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default mycls" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary save">Save</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <div class="modal fade" id="search-options-modal" tabindex="-1" role="dialog" aria-labelledby="search-options" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -94,7 +113,7 @@
                             <ul class="row">
                                 <li class="arrow-left col-xs-2 col-sm-1"><a class="animated" href="#"> </a></li>
                                 {% for search in searches %}
-                                <li class="search col-xs-2 col-sm-1"><a class="animated" href="#search-{{ search.id }}">{{ search.name }}</a></li>
+                                <li class="search col-xs-4 col-sm-1"><a class="animated" href="#search-{{ search.id }}">{{ search.name }}</a></li>
                                 {% endfor %}
                                 <li class="arrow-right col-xs-2 col-sm-1"><a class="animated" href="#"> </a></li>
                             </ul>

@@ -186,6 +186,16 @@ nav .row .arrow-right a:before {
     content: "\e000";
     font-family: icomoon;
 }
+#search-options-modal .modal-dialog {
+    width: 100%;
+}
+#search-options-modal .modal-dialog .modal-content {
+    background: #373E48;
+}
+#search-options-modal .modal-dialog .modal-content .modal-body {
+    padding-left: 0;
+    padding-right: 0;
+}
 .error {
     background: red;
     color: white;
