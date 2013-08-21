@@ -25,11 +25,7 @@ db = Database(app)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Models ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-RESOURCE_TYPES = (('F', 'B'), ('File', 'Bookmark'))
-class Resource(db.Model):
-    name = CharField(max_length=50, null=False)
-    type = CharField(max_length=5, null=False, choices=RESOURCE_TYPES, default='F')
-
+class BaseModel(db.Model):
     def __hash__(self):
         return hash(repr(self))
 
@@ -37,17 +33,20 @@ class Resource(db.Model):
         return repr(self.json())
 
     def json(self):
+        return {'id': self.id}
+
+
+RESOURCE_TYPES = (('F', 'B'), ('File', 'Bookmark'))
+class Resource(BaseModel):
+    name = CharField(max_length=50, null=False)
+    type = CharField(max_length=5, null=False, choices=RESOURCE_TYPES, default='F')
+
+    def json(self):
         return {'id': self.id, 'name': self.name, 'type': self.type}
 
 
-class Search(db.Model):
+class Search(BaseModel):
     name = CharField(max_length=50, null=False)
-
-    def __hash__(self):
-        return hash(repr(self))
-
-    def __repr__(self):
-        return repr(self.json())
 
     def json(self):
         return {'id': self.id, 'name': self.name}
@@ -61,14 +60,8 @@ class Search(db.Model):
         return [row for row in cls.select().where(cls.name == name)]
 
 
-class Tag(db.Model):
+class Tag(BaseModel):
     name = CharField(max_length=20, null=False, index=True)
-
-    def __hash__(self):
-        return hash(repr(self))
-
-    def __repr__(self):
-        return repr(self.json())
 
     def json(self):
         return {'id': self.id, 'name': self.name}
@@ -82,15 +75,9 @@ class Tag(db.Model):
         return [row for row in cls.select().where(cls.name << names)]
 
 
-class TagResource(db.Model):
+class TagResource(BaseModel):
     resource = ForeignKeyField(Resource)
     tag = ForeignKeyField(Tag)
-
-    def __hash__(self):
-        return hash(repr(self))
-
-    def __repr__(self):
-        return repr(self.json())
 
     def json(self):
         return {'id': self.id, 'resource': self.resource, 'tag': self.tag}
@@ -100,15 +87,9 @@ class TagResource(db.Model):
         return set(row.resource for row in cls.select().where(cls.tag << tags))
 
 
-class TagSearch(db.Model):
+class TagSearch(BaseModel):
     search = ForeignKeyField(Search)
     tag = ForeignKeyField(Tag)
-
-    def __hash__(self):
-        return hash(repr(self))
-
-    def __repr__(self):
-        return repr(self.json())
 
     def json(self):
         return {'id': self.id, 'search': self.search, 'tag': self.tag}
@@ -130,15 +111,19 @@ def add_new_tag():
     if not Tag.get_by_name([tag_name]):
         new_tag = Tag.create(name=tag_name)
         new_tag.save()
-        return jsonify({"status": "success", "tag-html": render_template("tag.html", tag=new_tag)})
+
+        return jsonify({
+            "status": "success",
+            "tag-html": render_template("tag.html", tag=new_tag)
+        })
 
     return jsonify({"status": "failure"})
 
 @app.route("/new-files")
 def new_files():
     resources = [row.resource for row in TagResource.select()]
-    nfiles = Resource.select().where(~(Resource.id << resources))
-    return render_template("resources.html", resources=nfiles)
+    new_resources = Resource.select().where(~(Resource.id << resources))
+    return render_template("resources.html", resources=new_resources)
 
 @app.route("/explorer", methods=['GET', 'POST'])
 def explorer():
@@ -147,9 +132,7 @@ def explorer():
 
     elif request.method == 'POST':
         tags_ids = json.loads(request.data)
-        tags = Tag.get_by_id(tags_ids)
-        resources = TagResource.get_resources_by_tags(tags)
-
+        resources = TagResource.get_resources_by_tags(tags_ids)
         return render_template("resources.html", resources=resources)
 
 @app.route("/save-search", methods=['POST'])
@@ -161,14 +144,29 @@ def save_search():
     if not Search.get_by_name(search_name):
         new_search = Search.create(name=search_name)
         new_search.save()
-        tags = Tag.get_by_id(tags_ids)
 
-        for tag in tags:
+        for tag in Tag.get_by_id(tags_ids):
             TagSearch.create(search=new_search, tag=tag).save()
 
-        return jsonify({"status": "success", "search-html": render_template("search.html", search=new_search)})
+        return jsonify({
+            "status": "success",
+            "search-html": render_template("search.html", search=new_search)
+        })
 
     return jsonify({"status": "failure"})
+
+@app.route("/search", methods=['GET'])
+def search():
+    search_id = int(request.args.get('search_id', -1))
+    tags = TagSearch.get_tags_by_search(search_id)
+
+    if tags:
+        return jsonify({
+            'status': 'success',
+            'tags_ids': [tag.id for tag in tags]
+        })
+
+    return jsonify({'status': 'failure'})
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if __name__ == "__main__":

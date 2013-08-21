@@ -21,9 +21,9 @@ $(document).ready(function() {
     });
 
     $("#add-new-tag-modal button.save").click(function() {
-        var tag_name = $("#add-new-tag-modal #new-tag-name").val()
+        var tag_name = $("#add-new-tag-modal #new-tag-name").val();
 
-        if(!tag_name) { return }
+        if(!tag_name) { return; }
 
         $.ajax({
             contentType: 'application/json',
@@ -32,9 +32,10 @@ $(document).ready(function() {
             url: '/add-new-tag'
         }).done(function(json) {
             if(json.status === 'success') {
-                $("#tags .row .tag:first").before(
+                $("#tags .row .tag:first").before( // Bug
                     $(json['tag-html']).click(function() {
                         $(this).toggleClass('active');
+                        refresh_resources();
                     })
                 );
                 $("#add-new-tag-modal").modal("hide");
@@ -65,13 +66,8 @@ $(document).ready(function() {
     });
 
     $("#save-search-modal button.save").click(function() {
-        var tags_ids = [];
-        var regex = /tag-([0-9]+)/;
-        var search_name = $("#save-search-modal #new-search-name").val()
-
-        $("#tags .row .tag.active").each(function(index) {
-            tags_ids[index] = $(this).html().split(regex)[1];
-        });
+        var tags_ids = get_active_tags_ids();
+        var search_name = $("#save-search-modal #new-search-name").val();
 
         if(!search_name) { return; }
 
@@ -90,10 +86,10 @@ $(document).ready(function() {
             url: '/save-search'
         }).done(function(json) {
             if(json.status === 'success') {
-                $("#searches .row .search:first").before(
+                $("#searches .row .search:first").before( // Bug
                     $(json['search-html']).click(function() {
                         $(this).toggleClass('active');
-                    })
+                    }).click(search)
                 );
                 $("#save-search-modal").modal("hide");
                 searches_handler.refresh_lis();
@@ -116,9 +112,7 @@ $(document).ready(function() {
         searches_handler.next_group_of_lis();
     });
 
-    $("#searches .row .search").click(function() {
-        $(this).toggleClass('active');
-    });
+    $("#searches .row .search").click(search);
 
     $("#tags .row .arrow-left").click(function() {
         tags_handler.previous_group_of_lis();
@@ -159,7 +153,7 @@ NavHandler.prototype.previous_group_of_lis = function() {
 NavHandler.prototype.refresh_lis = function() {
     this.$lis = $(this.lis_selector);
 
-    if($(window).width() >= 720) {
+    if($(window).width() >= 768) {
         this.amount_of_lis_to_show = this.sm;
 
     } else {
@@ -188,13 +182,19 @@ NavHandler.prototype.refresh_lis = function() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function refresh_resources() {
+function get_active_tags_ids() {
     var tags_ids = [];
     var regex = /tag-([0-9]+)/;
 
     $("#tags .row .tag.active").each(function(index) {
         tags_ids[index] = $(this).html().split(regex)[1];
     });
+
+    return tags_ids;
+}
+
+function refresh_resources() {
+    var tags_ids = get_active_tags_ids();
 
     $.ajax({
         contentType: "application/json",
@@ -203,6 +203,29 @@ function refresh_resources() {
         url: "/explorer"
     }).done(function(data) {
         $("#resources").html(data);
+    });
+}
+
+function search() {
+    var search_id = $(this).html().split(/search-([0-9]+)/)[1];
+
+    $.ajax({
+        contentType: 'application/json',
+        data: {search_id: search_id},
+        type: 'GET',
+        url: '/search'
+    }).done(function(json) {
+        $("#tags .row .tag").each(function() {
+            var tag_id = parseInt($(this).html().split(/tag-([0-9]+)/)[1]);
+
+            if(json['tags_ids'].indexOf(tag_id) !== -1) {
+                if(!$(this).hasClass("active")) { $(this).addClass("active"); }
+
+            } else {
+                $(this).removeClass("active");
+            }
+        });
+        refresh_resources();
     });
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
