@@ -1,10 +1,10 @@
 $(document).ready(function() {
-    // Events ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    $(window).resize(refresh_tags);
+    tags_handler = new NavHandler("#tags .row .tag", "#tags .row .arrow-right");
+    tags_handler.refresh_lis();
 
-    $("#tags ul .tag").click(function() {
-        $(this).toggleClass('active');
-        refresh_resources();
+    // Events ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    $(window).resize(function() {
+        tags_handler.refresh_lis();
     });
 
     $("#add-new-tag-modal").on('hidden.bs.modal', function() {
@@ -28,13 +28,13 @@ $(document).ready(function() {
             url: '/add-new-tag'
         }).done(function(json) {
             if(json.status === 'success') {
-                $("#tags ul .tag:first").before(
+                $("#tags .row .tag:first").before(
                     $(json['tag-html']).click(function() {
                         $(this).toggleClass('active');
                     })
                 );
                 $("#add-new-tag-modal").modal("hide");
-                refresh_tags();
+                tags_handler.refresh_lis();
 
             } else {
                 $("#add-new-tag-modal .error").html("Duplicated tag");
@@ -42,89 +42,98 @@ $(document).ready(function() {
         });
     });
 
-    $("#search-options-modal button.mycls").click(function() {
-        $("#search-options-modal").modal("hide");
+    $("#tags .row .arrow-left").click(function() {
+        tags_handler.previous_group_of_lis();
     });
 
-    $("#tags ul .arrow-left").click(previous_group_of_tags);
+    $("#tags .row .arrow-right").click(function() {
+        tags_handler.next_group_of_lis();
+    });
 
-    $("#tags ul .arrow-right").click(next_group_of_tags);
+    $("#tags .row .tag").click(function() {
+        $(this).toggleClass('active');
+        refresh_resources();
+    });
 
     $("#new-files").click(function() {
         $.ajax({
-            type: "GET",
             url: "/new-files",
+            type: "GET",
         }).done(function(data) {
             $("#resources").html(data);
         });
     });
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    refresh_tags();
+    $("#search-options-modal button.mycls").click(function() {
+        $("#search-options-modal").modal("hide");
+    });
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
 
-// Global variables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-var amount_of_tags_to_show = 0;
-var current_tag_index = 0;
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function next_group_of_tags() {
-    var $tags = $("#tags ul .tag");
-
-    current_tag_index += amount_of_tags_to_show;
-    while(current_tag_index > 0 && current_tag_index > $tags.length - amount_of_tags_to_show) { current_tag_index-- }
-    refresh_tags();
+// Classes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function NavHandler(lis_selector, right_arrow_selector) {
+    this.$lis = $(lis_selector);
+    this.$right_arrow = $(right_arrow_selector);
+    this.amount_of_lis_to_show = 0;
+    this.first_li_to_show = 0;
+    this.lis_selector = lis_selector;
+    this.right_arrow_default_classes = this.$right_arrow.attr("class");
 }
-
-function previous_group_of_tags() {
-    var $tags = $("#tags ul .tag");
-
-    current_tag_index -= amount_of_tags_to_show;
-    while(current_tag_index < 0) { current_tag_index++ }
-    refresh_tags();
+NavHandler.prototype.next_group_of_lis = function() {
+    this.first_li_to_show += this.amount_of_lis_to_show;
+    while(this.first_li_to_show > 0 && this.first_li_to_show > this.$lis.length - this.amount_of_lis_to_show) { --this.first_li_to_show }
+    this.refresh_lis();
 }
-
-function refresh_tags() {
-    var $tags = $("#tags ul .tag");
+NavHandler.prototype.previous_group_of_lis = function() {
+    this.first_li_to_show -= this.amount_of_lis_to_show;
+    while(this.first_li_to_show < 0) { ++this.first_li_to_show }
+    this.refresh_lis();
+}
+NavHandler.prototype.refresh_lis = function() {
+    this.$lis = $(this.lis_selector);
 
     if($(window).width() >= 720) {
-        amount_of_tags_to_show = 8;
+        this.amount_of_lis_to_show = 8;
+
     } else {
-        amount_of_tags_to_show = 2;
+        this.amount_of_lis_to_show = 2;
     }
 
-    $tags.each(function(index) {
-        if(current_tag_index <= index && index < (current_tag_index + amount_of_tags_to_show)) {
+    var first_li_to_show = this.first_li_to_show;
+    var amount_of_lis_to_show = this.amount_of_lis_to_show;
+
+    this.$lis.each(function(index) {
+        if(first_li_to_show <= index && index < (first_li_to_show + amount_of_lis_to_show)) {
             $(this).css("display", "block");
+
         } else {
             $(this).css("display", "none");
         }
     });
 
-    var $arrow_right = $("#tags ul .arrow-right");
-    $arrow_right.removeClass();
-    $arrow_right.addClass("arrow-right col-xs-2 col-sm-1");
+    this.$right_arrow.attr("class", this.right_arrow_default_classes);
 
-    if($tags.length - current_tag_index < amount_of_tags_to_show) {
-        var offset = amount_of_tags_to_show - ($tags.length - current_tag_index);
-        $arrow_right.addClass("col-sm-offset-" + offset);
+    if(this.$lis.length - this.first_li_to_show < this.amount_of_lis_to_show) {
+        var offset = this.amount_of_lis_to_show - (this.$lis.length - this.first_li_to_show);
+        this.$right_arrow.addClass("col-sm-offset-" + offset);
     }
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function refresh_resources() {
     var tags_ids = [];
     var regex = /tag-([0-9]+)/;
 
-    $("#tags ul .tag.active").each(function(index) {
+    $("#tags .row .tag.active").each(function(index) {
         tags_ids[index] = $(this).html().split(regex)[1];
     });
 
     $.ajax({
-        type: "POST",
-        url: "/explorer",
         contentType: "application/json",
         data: JSON.stringify(tags_ids),
+        type: "POST",
+        url: "/explorer"
     }).done(function(data) {
         $("#resources").html(data);
     });
