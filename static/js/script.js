@@ -108,6 +108,14 @@ $(document).ready(function() {
         $("#search-options-modal").modal("hide");
     });
 
+    $("#searches .row .arrow-left").click(function() {
+        searches_handler.previous_group_of_lis();
+    });
+
+    $("#searches .row .arrow-right").click(function() {
+        searches_handler.next_group_of_lis();
+    });
+
     $("#searches .row .search").click(function() {
         $(this).toggleClass('active');
     });
