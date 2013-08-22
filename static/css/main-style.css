@@ -148,6 +148,9 @@ nav .row .arrow-right a:before {
 #resources .resource {
     padding: 0.2em;
 }
+#resources .resource.active {
+    box-shadow: 1px 1px 2px #2A7FFF;
+}
 #resources .resource .row {
     display: block;
     margin: 0;

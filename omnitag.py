@@ -44,6 +44,10 @@ class Resource(BaseModel):
     def json(self):
         return {'id': self.id, 'name': self.name, 'type': self.type}
 
+    @classmethod
+    def get_by_id(cls, ids):
+        return [row for row in cls.select().where(cls.id << ids)]
+
 
 class Search(BaseModel):
     name = CharField(max_length=50, null=False)
@@ -85,6 +89,10 @@ class TagResource(BaseModel):
     @classmethod
     def get_resources_by_tags(cls, tags):
         return set(row.resource for row in cls.select().where(cls.tag << tags))
+
+    @classmethod
+    def get_row(cls, resource, tag):
+        return [row for row in cls.select().where((cls.resource == resource) & (cls.tag == tag))]
 
 
 class TagSearch(BaseModel):
@@ -165,6 +173,34 @@ def search():
             'status': 'success',
             'tags_ids': [tag.id for tag in tags]
         })
+
+    return jsonify({'status': 'failure'})
+
+@app.route("/update-resources-tags", methods=['POST'])
+def update_resources_tags():
+    data = json.loads(request.data)
+    action = data['action']
+    resources_ids = data['resources_ids']
+    tag_id = data['tag_id']
+
+    resources = Resource.get_by_id(resources_ids)
+    tag = Tag.get_by_id([tag_id])
+
+    if resources and tag:
+        tag = tag[0]
+        tag_resources = TagResource.get_resources_by_tags([tag])
+
+        if action == "add":
+            for resource in resources:
+                if resource not in tag_resources:
+                    TagResource.create(resource=resource, tag=tag).save()
+            return jsonify({'status': 'success'})
+
+        elif action == "remove":
+            for resource in resources:
+                if resource in tag_resources:
+                    TagResource.get_row(resource=resource, tag=tag)[0].delete_instance()
+            return jsonify({'status': 'success'})
 
     return jsonify({'status': 'failure'})
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

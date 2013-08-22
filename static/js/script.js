@@ -53,6 +53,9 @@ $(document).ready(function() {
             type: "GET",
         }).done(function(data) {
             $("#resources").html(data);
+            $("#resources .resource").click(function() {
+                $(this).toggleClass("active");
+            });
         });
     });
 
@@ -123,8 +126,35 @@ $(document).ready(function() {
     });
 
     $("#tags .row .tag").click(function() {
+        var action;
+        var active_resources = get_active_resources_ids();
+
         $(this).toggleClass('active');
-        refresh_resources();
+
+        if(active_resources.length !== 0) {
+            if($(this).hasClass('active')) {
+                action = 'add';
+
+            } else {
+                action = 'remove';
+            }
+        }
+
+        if(action) {
+            $.ajax({
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    action: action,
+                    resources_ids: active_resources,
+                    tag_id: $(this).html().split(/tag-([0-9]+)/)[1]
+                }),
+                type: 'POST',
+                url: '/update-resources-tags'
+            });
+
+        } else {
+            refresh_resources();
+        }
     });
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
@@ -182,6 +212,16 @@ NavHandler.prototype.refresh_lis = function() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function get_active_resources_ids() {
+    var resources_ids = [];
+
+    $("#resources .resource.active").each(function(index) {
+        resources_ids[index] = $(this).html().split(/resource-([0-9]+)/)[1];
+    });
+
+    return resources_ids;
+}
+
 function get_active_tags_ids() {
     var tags_ids = [];
     var regex = /tag-([0-9]+)/;
@@ -203,6 +243,9 @@ function refresh_resources() {
         url: "/explorer"
     }).done(function(data) {
         $("#resources").html(data);
+        $("#resources .resource").click(function() {
+            $(this).toggleClass("active");
+        });
     });
 }
 
