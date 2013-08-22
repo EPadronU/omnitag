@@ -226,7 +226,7 @@ function search_behaviour() {
                 var tag_id = parseInt($(this).html().split(/tag-([0-9]+)/)[1]);
 
                 if(json.tags_ids.indexOf(tag_id) !== -1) {
-                    $(this).Class("active");
+                    $(this).addClass("active");
 
                 } else {
                     $(this).removeClass("active");
