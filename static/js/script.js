@@ -27,7 +27,9 @@ $(document).ready(function() {
 
         $.ajax({
             contentType: 'application/json',
-            data: JSON.stringify(tag_name),
+            data: JSON.stringify({
+                tag_name: tag_name
+            }),
             type: 'POST',
             url: '/add-new-tag'
         }).done(function(json) {
@@ -49,7 +51,7 @@ $(document).ready(function() {
 
     $("#new-files").click(function() {
         $.ajax({
-            url: "/new-files",
+            url: "/new-resources",
             type: "GET",
         }).done(function(data) {
             $("#resources").html(data);
@@ -238,7 +240,9 @@ function refresh_resources() {
 
     $.ajax({
         contentType: "application/json",
-        data: JSON.stringify(tags_ids),
+        data: JSON.stringify({
+            tags_ids: tags_ids
+        }),
         type: "POST",
         url: "/explorer"
     }).done(function(data) {
@@ -254,21 +258,25 @@ function search() {
 
     $.ajax({
         contentType: 'application/json',
-        data: {search_id: search_id},
+        data: {
+            search_id: search_id
+        },
         type: 'GET',
         url: '/search'
     }).done(function(json) {
-        $("#tags .row .tag").each(function() {
-            var tag_id = parseInt($(this).html().split(/tag-([0-9]+)/)[1]);
+        if(json.status == 'success'){
+            $("#tags .row .tag").each(function() {
+                var tag_id = parseInt($(this).html().split(/tag-([0-9]+)/)[1]);
 
-            if(json['tags_ids'].indexOf(tag_id) !== -1) {
-                if(!$(this).hasClass("active")) { $(this).addClass("active"); }
+                if(json['tags_ids'].indexOf(tag_id) !== -1) {
+                    if(!$(this).hasClass("active")) { $(this).addClass("active"); }
 
-            } else {
-                $(this).removeClass("active");
-            }
-        });
-        refresh_resources();
+                } else {
+                    $(this).removeClass("active");
+                }
+            });
+            refresh_resources();
+        }
     });
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
