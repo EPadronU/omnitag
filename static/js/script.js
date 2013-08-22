@@ -23,7 +23,7 @@ $(document).ready(function() {
     $("#add-new-tag-modal button.save").click(function() {
         var tag_name = $("#add-new-tag-modal #new-tag-name").val();
 
-        if(!tag_name) { return; }
+        if(!tag_name) { return }
 
         $.ajax({
             contentType: 'application/json',
@@ -34,13 +34,10 @@ $(document).ready(function() {
             url: '/add-new-tag'
         }).done(function(json) {
             if(json.status === 'success') {
-                $("#tags .row .tag:first").before( // Bug
-                    $(json['tag-html']).click(function() {
-                        $(this).toggleClass('active');
-                        refresh_resources();
-                    })
-                );
                 $("#add-new-tag-modal").modal("hide");
+                $("#tags .row li:nth-child(2)").after(
+                    $(json['tag-html']).click(tag_behaviour)
+                );
                 tags_handler.refresh_lis();
 
             } else {
@@ -91,12 +88,10 @@ $(document).ready(function() {
             url: '/save-search'
         }).done(function(json) {
             if(json.status === 'success') {
-                $("#searches .row .search:first").before( // Bug
-                    $(json['search-html']).click(function() {
-                        $(this).toggleClass('active');
-                    }).click(search)
-                );
                 $("#save-search-modal").modal("hide");
+                $("#searches .row li:first").after(
+                    $(json['search-html']).click(search_behaviour)
+                );
                 searches_handler.refresh_lis();
 
             } else {
@@ -117,7 +112,7 @@ $(document).ready(function() {
         searches_handler.next_group_of_lis();
     });
 
-    $("#searches .row .search").click(search);
+    $("#searches .row .search").click(search_behaviour);
 
     $("#tags .row .arrow-left").click(function() {
         tags_handler.previous_group_of_lis();
@@ -127,43 +122,12 @@ $(document).ready(function() {
         tags_handler.next_group_of_lis();
     });
 
-    $("#tags .row .tag").click(function() {
-        var action;
-        var active_resources = get_active_resources_ids();
-
-        $(this).toggleClass('active');
-
-        if(active_resources.length !== 0) {
-            if($(this).hasClass('active')) {
-                action = 'add';
-
-            } else {
-                action = 'remove';
-            }
-        }
-
-        if(action) {
-            $.ajax({
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    action: action,
-                    resources_ids: active_resources,
-                    tag_id: $(this).html().split(/tag-([0-9]+)/)[1]
-                }),
-                type: 'POST',
-                url: '/update-resources-tags'
-            });
-
-        } else {
-            refresh_resources();
-        }
-    });
+    $("#tags .row .tag").click(tag_behaviour);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
 
 // Classes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function NavHandler(lis_selector, right_arrow_selector, xs, sm) {
-    this.$lis = $(lis_selector);
     this.$right_arrow = $(right_arrow_selector);
     this.amount_of_lis_to_show = 0;
     this.first_li_to_show = 0;
@@ -192,6 +156,7 @@ NavHandler.prototype.refresh_lis = function() {
         this.amount_of_lis_to_show = this.xs;
     }
 
+    // To expose this variables to the following block of code
     var first_li_to_show = this.first_li_to_show;
     var amount_of_lis_to_show = this.amount_of_lis_to_show;
 
@@ -220,28 +185,23 @@ function get_active_resources_ids() {
     $("#resources .resource.active").each(function(index) {
         resources_ids[index] = $(this).html().split(/resource-([0-9]+)/)[1];
     });
-
     return resources_ids;
 }
 
 function get_active_tags_ids() {
     var tags_ids = [];
-    var regex = /tag-([0-9]+)/;
 
     $("#tags .row .tag.active").each(function(index) {
-        tags_ids[index] = $(this).html().split(regex)[1];
+        tags_ids[index] = $(this).html().split(/tag-([0-9]+)/)[1];
     });
-
     return tags_ids;
 }
 
 function refresh_resources() {
-    var tags_ids = get_active_tags_ids();
-
     $.ajax({
         contentType: "application/json",
         data: JSON.stringify({
-            tags_ids: tags_ids
+            tags_ids: get_active_tags_ids()
         }),
         type: "POST",
         url: "/explorer"
@@ -253,23 +213,20 @@ function refresh_resources() {
     });
 }
 
-function search() {
-    var search_id = $(this).html().split(/search-([0-9]+)/)[1];
-
+function search_behaviour() {
     $.ajax({
-        contentType: 'application/json',
         data: {
-            search_id: search_id
+            search_id: $(this).html().split(/search-([0-9]+)/)[1]
         },
         type: 'GET',
         url: '/search'
     }).done(function(json) {
-        if(json.status == 'success'){
+        if(json.status === 'success') {
             $("#tags .row .tag").each(function() {
                 var tag_id = parseInt($(this).html().split(/tag-([0-9]+)/)[1]);
 
-                if(json['tags_ids'].indexOf(tag_id) !== -1) {
-                    if(!$(this).hasClass("active")) { $(this).addClass("active"); }
+                if(json.tags_ids.indexOf(tag_id) !== -1) {
+                    $(this).Class("active");
 
                 } else {
                     $(this).removeClass("active");
@@ -278,5 +235,37 @@ function search() {
             refresh_resources();
         }
     });
+}
+
+function tag_behaviour() {
+    $(this).toggleClass('active');
+
+    var action;
+    var active_resources = get_active_resources_ids();
+
+    if(active_resources.length !== 0) {
+        if($(this).hasClass('active')) {
+            action = 'add';
+
+        } else {
+            action = 'remove';
+        }
+    }
+
+    if(action) {
+        $.ajax({
+            contentType: 'application/json',
+            data: JSON.stringify({
+                action: action,
+                resources_ids: active_resources,
+                tag_id: $(this).html().split(/tag-([0-9]+)/)[1]
+            }),
+            type: 'POST',
+            url: '/update-resources-tags'
+        });
+
+    } else {
+        refresh_resources();
+    }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
