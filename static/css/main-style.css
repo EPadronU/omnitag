@@ -145,27 +145,27 @@ nav .row .arrow-right a:before {
     width: 98%;
     z-index: 10;
 }
-#resources .resource {
+#resources .row .resource {
     padding: 0.2em;
 }
-#resources .resource.active {
+#resources .row .resource.active {
     box-shadow: 1px 1px 2px #2A7FFF;
 }
-#resources .resource .row {
+#resources .row .resource .row {
     display: block;
     margin: 0;
     text-align: center;
 }
-#resources .resource .row .resource-img {
+#resources .row .resource .row .resource-img {
     margin: 0;
     padding: 0;
 }
-#resources .resource .row .resource-img:before {
+#resources .row .resource .row .resource-img:before {
     content: "\e003";
     font-family: icomoon;
     font-size: 32px;
 }
-#resources .resource .row .resource-name {
+#resources .row .resource .row .resource-name {
     color: #1A1A1A;
     line-height: 1em;
     margin: 0;

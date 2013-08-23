@@ -1,5 +1,5 @@
 @media (min-width: 768px) {
-    #resources .resource .row .resource-name {
+    #resources .row .resource .row .resource-name {
         padding: 0.5em 0 0 0.5em;
         text-align: left;
     }

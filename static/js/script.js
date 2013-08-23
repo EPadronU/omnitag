@@ -51,8 +51,8 @@ $(document).ready(function() {
             url: "/new-resources",
             type: "GET",
         }).done(function(data) {
-            $("#resources").html(data);
-            $("#resources .resource").click(function() {
+            $("#resources .row").html(data);
+            $("#resources .row .resource").click(function() {
                 $(this).toggleClass("active");
             });
         });
@@ -182,7 +182,7 @@ NavHandler.prototype.refresh_lis = function() {
 function get_active_resources_ids() {
     var resources_ids = [];
 
-    $("#resources .resource.active").each(function(index) {
+    $("#resources .row .resource.active").each(function(index) {
         resources_ids[index] = $(this).html().split(/resource-([0-9]+)/)[1];
     });
     return resources_ids;
@@ -206,8 +206,8 @@ function refresh_resources() {
         type: "POST",
         url: "/explorer"
     }).done(function(data) {
-        $("#resources").html(data);
-        $("#resources .resource").click(function() {
+        $("#resources .row").html(data);
+        $("#resources .row .resource").click(function() {
             $(this).toggleClass("active");
         });
     });
