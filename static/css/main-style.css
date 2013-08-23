@@ -50,8 +50,9 @@ header .row #avatar figure #account-options > a {
     text-align: center;
 }
 header .row #avatar figure #account-options > a:before {
-    content: "\e000";
+    content: "\f0d7";
     font-family: icomoon;
+    opacity: 0.9;
 }
 header .row #avatar figure #account-options .dropdown-menu {
     background: #535D6C;
@@ -82,7 +83,7 @@ header .row #isologotype a {
 }
 header .row #isologotype a:before {
     color: #2A7FFF;
-    content: "\f0da";
+    content: "\e001";
     font-family: icomoon;
     font-size: 30px;
     left: -2px;
@@ -114,27 +115,31 @@ nav .row #add-new-tag a, nav .row #save-search a, nav .row .arrow-left a, nav .r
     line-height: 44px;
 }
 nav .row #add-new-tag a:before {
-    content: "\f014";
+    content: "\e006";
     font-family: icomoon;
+    opacity: 0.9;
 }
 nav .row #save-search a:before {
-    content: "\e002";
+    content: "\e003";
     font-family: icomoon;
+    opacity: 0.9;
 }
 nav .row .arrow-left, nav .row .arrow-right {
     background: #2A7FFF;
 }
 nav .row .arrow-left a:before {
-    content: "\f0d7";
+    content: "\f0d9";
     font-family: icomoon;
+    opacity: 0.9;
 }
 nav .row .arrow-right a:before {
-    content: "\f0d8";
+    content: "\f0da";
     font-family: icomoon;
+    opacity: 0.9;
 }
 #resources {
     background: white;
-    border: 0.5px solid black;
+    border: 1px solid black;
     border-radius: 5px;
     margin: 0 auto;
     min-height: 60px;
@@ -145,11 +150,37 @@ nav .row .arrow-right a:before {
     width: 98%;
     z-index: 10;
 }
+#resources #select-all-none {
+    background: #5599FF;
+    border-radius: 0 3px 0 15px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    z-index: 20;
+}
+#resources #select-all-none a {
+    color: #E7E9EB;
+    display: block;
+    opacity: 0.9;
+    width: 3em;
+}
+#resources #select-all-none a:before {
+    content: "\e00a";
+    font-family: icomoon;
+    font-size: 2em;
+    line-height: 1.5em;
+}
+#resources #select-all-none.active a:before {
+    content: "\f096";
+}
 #resources .row .resource {
     padding: 0.2em;
 }
-#resources .row .resource.active {
-    box-shadow: 1px 1px 2px #2A7FFF;
+#resources .row .resource.active a {
+    background: #CCC;
+    border-radius: 3px;
+    color: #1A1A1A;
 }
 #resources .row .resource .row {
     display: block;
@@ -161,7 +192,7 @@ nav .row .arrow-right a:before {
     padding: 0;
 }
 #resources .row .resource .row .resource-img:before {
-    content: "\e003";
+    content: "\e004";
     font-family: icomoon;
     font-size: 32px;
 }
@@ -186,8 +217,9 @@ nav .row .arrow-right a:before {
     line-height: 15px;
 }
 #search-options a:before {
-    content: "\e000";
+    content: "\f0d7";
     font-family: icomoon;
+    opacity: 0.9;
 }
 #search-options-modal .modal-dialog {
     width: 100%;

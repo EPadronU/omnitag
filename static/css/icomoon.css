@@ -27,7 +27,7 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"] {
 */
-.icon-caret-down, .icon-caret-up, .icon-caret-left, .icon-caret-right, .icon-undo, .icon-tags, .icon-install, .icon-libreoffice, .icon-star, .icon-plus, .icon-pencil, .icon-trash, .icon-mobile, .icon-tablet, .icon-laptop {
+.icon-caret-down, .icon-caret-up, .icon-caret-left, .icon-caret-right, .icon-undo, .icon-tags, .icon-disk, .icon-libreoffice, .icon-star, .icon-plus, .icon-pencil, .icon-trashcan, .icon-mobile, .icon-tablet, .icon-laptop, .icon-layout, .icon-check-empty {
 	font-family: 'icomoon';
 	speak: none;
 	font-style: normal;
@@ -38,47 +38,53 @@ you can use the generic selector below, but it's slower:
 	-webkit-font-smoothing: antialiased;
 }
 .icon-caret-down:before {
-	content: "\e000";
-}
-.icon-caret-up:before {
-	content: "\e001";
-}
-.icon-caret-left:before {
 	content: "\f0d7";
 }
-.icon-caret-right:before {
+.icon-caret-up:before {
 	content: "\f0d8";
 }
-.icon-undo:before {
+.icon-caret-left:before {
 	content: "\f0d9";
 }
-.icon-tags:before {
+.icon-caret-right:before {
 	content: "\f0da";
 }
-.icon-install:before {
-	content: "\e002";
+.icon-undo:before {
+	content: "\e000";
 }
-.icon-libreoffice:before {
+.icon-tags:before {
+	content: "\e001";
+}
+.icon-disk:before {
 	content: "\e003";
 }
-.icon-star:before {
+.icon-libreoffice:before {
 	content: "\e004";
 }
-.icon-plus:before {
-	content: "\f014";
-}
-.icon-pencil:before {
-	content: "\f040";
-}
-.icon-trash:before {
-	content: "\f067";
-}
-.icon-mobile:before {
+.icon-star:before {
 	content: "\e005";
 }
-.icon-tablet:before {
+.icon-plus:before {
 	content: "\e006";
 }
-.icon-laptop:before {
+.icon-pencil:before {
+	content: "\e007";
+}
+.icon-trashcan:before {
+	content: "\e008";
+}
+.icon-mobile:before {
+	content: "\e009";
+}
+.icon-tablet:before {
 	content: "\f109";
+}
+.icon-laptop:before {
+	content: "\f009";
+}
+.icon-layout:before {
+	content: "\e00a";
+}
+.icon-check-empty:before {
+	content: "\f096";
 }

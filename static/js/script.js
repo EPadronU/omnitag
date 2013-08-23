@@ -54,8 +54,20 @@ $(document).ready(function() {
             $("#resources .row").html(data);
             $("#resources .row .resource").click(function() {
                 $(this).toggleClass("active");
+                $("#resources #select-all-none").addClass("active");
             });
         });
+    });
+
+    $("#resources #select-all-none").click(function() {
+        $(this).toggleClass("active");
+
+        if($(this).hasClass("active")) {
+            $("#resources .row .resource").addClass("active");
+
+        } else {
+            $("#resources .row .resource").removeClass("active");
+        }
     });
 
     $("#save-search-modal").on('hidden.bs.modal', function() {
@@ -209,6 +221,7 @@ function refresh_resources() {
         $("#resources .row").html(data);
         $("#resources .row .resource").click(function() {
             $(this).toggleClass("active");
+            $("#resources #select-all-none").addClass("active");
         });
     });
 }
