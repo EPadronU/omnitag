@@ -1,5 +1,6 @@
 # Modules ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import json
+import os
 import peewee as pw
 
 from flask import Flask
@@ -170,6 +171,16 @@ def search():
             'tags_ids': [tag.id for tag in TagSearch.get_tags_by_search(search_id)]
         })
     return jsonify({'status': 'failure'})
+
+@app.route("/sync", methods=['POST'])
+def sync():
+    data = json.loads(request.data)
+
+    for filepath in data:
+        resource_name = os.path.basename(filepath)
+
+        if not Resource.exist(name=resource_name):
+            Resource.create(name=resource_name).save()
 
 @app.route("/update-resources-tags", methods=['POST'])
 def update_resources_tags():
