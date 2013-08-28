@@ -1,5 +1,4 @@
 # Modules ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import json
 import os
 import peewee as pw
 
@@ -112,8 +111,7 @@ def index():
 
 @app.route("/add-new-tag", methods=['POST'])
 def add_new_tag():
-    data = json.loads(request.data)
-    tag_name = data.get('tag_name', '')
+    tag_name = request.get_json().get('tag_name', '')
 
     if tag_name and not Tag.exist(name=tag_name):
         new_tag = Tag.create(name=tag_name)
@@ -127,8 +125,7 @@ def add_new_tag():
 
 @app.route("/new-resources")
 def new_resources():
-    tagged_resources = [row.resource for row in TagResource.select()]
-    untagged_resources = Resource.select().where(~(Resource.id << tagged_resources))
+    untagged_resources = Resource.select().where(~(Resource.id << TagResource.select(TagResource.id)))
     return render_template("resources.html", resources=untagged_resources)
 
 @app.route("/explorer", methods=['GET', 'POST'])
@@ -137,14 +134,14 @@ def explorer():
         return render_template("explorer.html", tags=Tag.select(), searches=Search.select())
 
     elif request.method == 'POST':
-        data = json.loads(request.data)
+        data = request.get_json()
         tags_ids = data.get('tags_ids', '')
         resources = TagResource.get_resources_by_tag(tags_ids)
         return render_template("resources.html", resources=resources)
 
 @app.route("/save-search", methods=['POST'])
 def save_search():
-    data = json.loads(request.data)
+    data = request.get_json()
     search_name = data.get('search_name', '')
     tags_ids = data.get('tags_ids', '')
 
@@ -174,17 +171,16 @@ def search():
 
 @app.route("/sync", methods=['POST'])
 def sync():
-    data = json.loads(request.data)
-
-    for filepath in data:
+    for filepath in request.get_json().get('new-resources', []):
         resource_name = os.path.basename(filepath)
 
         if not Resource.exist(name=resource_name):
             Resource.create(name=resource_name).save()
+    return '', 200
 
 @app.route("/update-resources-tags", methods=['POST'])
 def update_resources_tags():
-    data = json.loads(request.data)
+    data = request.get_json()
     action = data.get('action', '')
     resources_ids = data.get('resources_ids', '')
     tag_id = data.get('tag_id', '')
