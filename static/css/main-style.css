@@ -4,91 +4,7 @@ a, a:focus, a:hover {
 body {
     background: #F2F2F2;
     font-family: "Pt Sans", Arial;
-}
-footer {
-    background: #373E48;
-    color: white;
-    font-size: 0.9em;
-    padding: 0.5em 0;
-    text-align: center;
-    width: 100%;
-}
-footer p {
     margin: 0;
-}
-header {
-    background: #373E48;
-}
-header h1 {
-    background: #3771C8;
-    border-radius: 5px 5px 0 0;
-    color: white;
-    font-size: 1.2em;
-    font-weight: bold;
-    margin: 0 auto;
-    max-width: 120px;
-    padding: 0.2em;
-    text-align: center;
-}
-header .row #avatar {
-    padding: 0.5em 1em 0 0;
-}
-header .row #avatar figure {
-    float: right;
-}
-header .row #avatar figure img {
-    width: 50px;
-}
-header .row #avatar figure #account-options {
-    background: #3771C8;
-    border-radius: 0 0 2px 2px;
-}
-header .row #avatar figure #account-options > a {
-    color: #E4ECF7;
-    display: block;
-    line-height: 15px;
-    text-align: center;
-}
-header .row #avatar figure #account-options > a:before {
-    content: "\f0d7";
-    font-family: icomoon;
-    opacity: 0.9;
-}
-header .row #avatar figure #account-options .dropdown-menu {
-    background: #535D6C;
-    left: -10px;
-    margin: 0.5em 0 0 0;
-    min-width: 0;
-    padding: 0;
-    text-align: center;
-    width: 70px;
-}
-header .row #avatar figure #account-options .dropdown-menu li a {
-    color: white;
-    display: block;
-    font-size: 0.8em;
-    font-weight: bold;
-    padding: 0.5em 0;
-}
-header .row #avatar figure #account-options .dropdown-menu li a:hover {
-    background: #3771C8;
-}
-header .row #isologotype {
-    padding: 1em 0 0 1em;
-}
-header .row #isologotype a {
-    color: #D3DADC;
-    font-family: Lobster;
-    font-size: 28px;
-}
-header .row #isologotype a:before {
-    color: #2A7FFF;
-    content: "\e001";
-    font-family: icomoon;
-    font-size: 30px;
-    left: -2px;
-    position: relative;
-    top: 3px;
 }
 nav {
     background: #535D6C;
@@ -136,6 +52,93 @@ nav .row .arrow-right a:before {
     content: "\f0da";
     font-family: icomoon;
     opacity: 0.9;
+}
+#page-footer {
+    background: #373E48;
+    color: white;
+    font-size: 0.9em;
+    padding: 0.5em 0;
+    text-align: center;
+    width: 100%;
+}
+#page-footer p {
+    margin: 0;
+}
+#page-header {
+    background: #373E48;
+    margin: 0;
+    padding: 0.5em 2em 0 2em;
+}
+#page-header h1 {
+    background: #3771C8;
+    border-radius: 5px 5px 0 0;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0 auto;
+    max-width: 120px;
+    padding: 0.2em;
+    text-align: center;
+}
+#page-header .row #avatar {
+    padding: 0.5em 1em 0 0;
+}
+#page-header .row #avatar figure {
+    float: right;
+}
+#page-header .row #avatar figure img {
+    width: 70px;
+}
+#page-header .row #avatar figure #account-options {
+    background: #3771C8;
+    border-radius: 0 0 2px 2px;
+}
+#page-header .row #avatar figure #account-options > a {
+    color: #E4ECF7;
+    display: block;
+    line-height: 15px;
+    text-align: center;
+}
+#page-header .row #avatar figure #account-options > a:before {
+    content: "\f0d7";
+    font-family: icomoon;
+    opacity: 0.9;
+}
+#page-header .row #avatar figure #account-options .dropdown-menu {
+    background: #535D6C;
+    left: -10px;
+    margin: 0.5em 0 0 0;
+    min-width: 0;
+    padding: 0;
+    text-align: center;
+    width: 90px;
+}
+#page-header .row #avatar figure #account-options .dropdown-menu li a {
+    color: white;
+    display: block;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 0.5em 0;
+}
+#page-header .row #avatar figure #account-options .dropdown-menu li a:hover {
+    background: #3771C8;
+}
+#page-header .row #isologotype {
+    padding: 1em 0 0 1em;
+}
+#page-header .row #isologotype a {
+    color: #D3DADC;
+    font-family: Lobster;
+    font-size: 28px;
+}
+#page-header .row #isologotype a:before {
+    color: #2A7FFF;
+    content: "\e001";
+    font-family: icomoon;
+    font-size: 30px;
+    left: -2px;
+    position: relative;
+    top: 3px;
 }
 #resources {
     background: white;

@@ -16,10 +16,6 @@ $(document).ready(function() {
         $("#add-new-tag-modal .error").html("");
     });
 
-    $("#add-new-tag-modal button.mycls").click(function() {
-        $("#add-new-tag-modal").modal("hide");
-    });
-
     $("#add-new-tag-modal button.save").click(function() {
         var tag_name = $("#add-new-tag-modal #new-tag-name").val();
 
@@ -75,10 +71,6 @@ $(document).ready(function() {
         $("#save-search-modal .error").html("");
     });
 
-    $("#save-search-modal button.mycls").click(function() {
-        $("#save-search-modal").modal("hide");
-    });
-
     $("#save-search-modal button.save").click(function() {
         var tags_ids = get_active_tags_ids();
         var search_name = $("#save-search-modal #new-search-name").val();
@@ -110,10 +102,6 @@ $(document).ready(function() {
                 $("#save-search-modal .error").html("This search already exists");
             }
         });
-    });
-
-    $("#search-options-modal button.mycls").click(function() {
-        $("#search-options-modal").modal("hide");
     });
 
     $("#searches .row .arrow-left").click(function() {

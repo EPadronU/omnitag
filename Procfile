@@ -1,1 +1,1 @@
-web: gunicorn omnitag:app
+web: gunicorn run:app

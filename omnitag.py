@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Modules ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import os
 import peewee as pw
@@ -125,7 +127,7 @@ def add_new_tag():
 
 @app.route("/new-resources")
 def new_resources():
-    untagged_resources = Resource.select().where(~(Resource.id << TagResource.select(TagResource.id)))
+    untagged_resources = Resource.select().where(~(Resource.id << TagResource.select(TagResource.resource)))
     return render_template("resources.html", resources=untagged_resources)
 
 @app.route("/explorer", methods=['GET', 'POST'])

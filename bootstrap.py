@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from omnitag import Resource
 from omnitag import Search
 from omnitag import Tag

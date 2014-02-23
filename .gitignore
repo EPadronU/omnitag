@@ -1,2 +1,6 @@
-venv
+# Virtual Enviroment #
+.venv/
+
+
+# Compiled source code #
 *.pyc
