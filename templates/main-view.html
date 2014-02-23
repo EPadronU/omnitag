@@ -30,6 +30,9 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li role="presentation"><a id="new-files" role="menuitem" tabindex="-1" href="#">New files</a></li>
+                                <li role="presentation">
+                                    <a id="tags-and-searches" role="menuitem" data-toggle="modal" href="#tags-and-searches-modal">Tags & Searches</a>
+                                </li>
                                 <li role="presentation"><a id="settings" role="menuitem" tabindex="-1" href="#">Settings</a></li>
                                 <li role="presentation"><a id="logout" role="menuitem" tabindex="-1" href="#">Log out</a></li>
                             </ul>
@@ -41,7 +44,7 @@
             <h1>{% block h1 %} {% endblock %}</h1>
         </header>
 
-        <nav id="page-nav">
+        <nav id="tags">
             <ul class="row">
                 <li class="col-xs-2 col-sm-1" id="add-new-tag"><a class="animated" data-toggle="modal" href="#add-new-tag-modal"> </a></li>
                 <li class="arrow-left col-xs-2 col-sm-1"><a class="animated" href="#"> </a></li>
@@ -129,10 +132,59 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <div class="modal fade" id="tags-and-searches-modal" tabindex="-1" role="dialog" aria-labelledby="search-options" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Tags & Searches</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <h2>Tags</h2>
+
+                            <nav id="view-tags">
+                                <ul class="row"></ul>
+                            </nav>
+                        </div>
+
+                        <div>
+                            <h2>Searches</h2>
+
+                            <nav id="view-searches">
+                                <ul class="row"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!-- templates -->
+        <script id="tag-search-detailed-view-template" type="text/templates">
+            <section class="detailed-view">
+                <section>
+                    <div>
+                        <input class="name" type="text" value="<%= name %>"/>
+                    </div>
+
+                    <div class="icons">
+                        <p><a class="icon icon-disk" data-id="<%= id %>" href="#"></a></p>
+                        <p><a class="icon icon-trashcan" data-id="<%= id %>" href="#"></a></p>
+                    </div>
+                </section>
+
+                <p><a class="icon icon-undo" href="#"></a></p>
+            </section>
+        </script>
 
         <!-- libs -->
         <script src="../static/js/jquery-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/underscore-min.js" type="text/javascript" charset="utf-8"></script>
         <script src="/static/js/script.js" type="text/javascript" charset="utf-8"></script>
     </body>
 </html>

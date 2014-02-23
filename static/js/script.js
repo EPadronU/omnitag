@@ -1,9 +1,8 @@
 $(document).ready(function() {
     searches_handler = new NavHandler("#searches .row .search", "#searches .row .arrow-right", 2, 10);
-    searches_handler.refresh_lis();
-
     tags_handler = new NavHandler("#tags .row .tag", "#tags .row .arrow-right", 2, 8);
-    tags_handler.refresh_lis();
+
+    refresh_tags_and_searches();
 
     // Events ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     $(window).resize(function() {
@@ -27,7 +26,7 @@ $(document).ready(function() {
                 tag_name: tag_name
             }),
             type: 'POST',
-            url: '/add-new-tag'
+            url: '/tag'
         }).done(function(json) {
             if(json.status === 'success') {
                 $("#add-new-tag-modal").modal("hide");
@@ -89,7 +88,7 @@ $(document).ready(function() {
                 tags_ids: tags_ids
             }),
             type: 'POST',
-            url: '/save-search'
+            url: '/search'
         }).done(function(json) {
             if(json.status === 'success') {
                 $("#save-search-modal").modal("hide");
@@ -122,7 +121,13 @@ $(document).ready(function() {
         tags_handler.next_group_of_lis();
     });
 
-    $("#tags .row .tag").click(tag_behaviour);
+    $('#tags-and-searches-modal').on('show.bs.modal', function() {
+        load_tag_search_general_view($(this));
+    });
+
+    $('#tags-and-searches-modal').on('show.bs.modal', function() {
+        $(this).find('.icon-undo').click();
+    });
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
 
@@ -234,8 +239,11 @@ function search_behaviour() {
                 }
             });
             refresh_resources();
+            $('#search-options-modal').modal('hide');
         }
     });
+    $('#searches .search').removeClass('active');
+    $(this).toggleClass('active');
 }
 
 function tag_behaviour() {
@@ -268,5 +276,103 @@ function tag_behaviour() {
     } else {
         refresh_resources();
     }
+}
+
+
+function tag_and_search_edit_or_delete(type, cls, id, new_name) {
+    $.ajax({
+        contentType: 'application/json',
+        data: JSON.stringify({
+            id: id,
+            new_name: new_name,
+        }),
+        type: type,
+        url: '/' + cls,
+    });
+}
+
+function load_tag_search_general_view($modal) {
+    var template = _.template('<li class="col-xs-6 col-sm-3 <%= cls %>"><a href="<%= href %>"> <%= val %> </a></li>');
+
+    var $el = $modal.find('#view-tags ul').empty();
+    $('#tags .tag a').each(function(i, item) {
+        $el.append(template({href: $(item).attr('href'), val: $(item).html(), cls: 'tag'}));
+    });
+
+    var $el = $modal.find('#view-searches ul').empty();
+    $('#searches .search a').each(function(i, item) {
+        $el.append(template({href: $(item).attr('href'), val: $(item).html(), cls: 'search'}));
+    });
+
+    $modal.find('li.tag a').click(function() {
+        load_tag_search_detailed_view($(this), 'tag');
+    })
+
+    $modal.find('li.search a').click(function() {
+        load_tag_search_detailed_view($(this), 'search');
+    })
+}
+
+function load_tag_search_detailed_view($el, cls) {
+    var template = _.template($('#tag-search-detailed-view-template').html());
+    var $modal = $('#tags-and-searches-modal');
+    var old_modal_body = $modal.find('.modal-body').html();
+
+    $modal.find('.modal-body').html(template({
+        id: $el.attr('href').split(/tag-([0-9]+)/)[1] || $el.attr('href').split(/search-([0-9]+)/)[1],
+        name: $el.html(),
+    }));
+
+    $modal.find('.modal-body .icon-disk').click(function() {
+        var $el = $(this);
+        tag_and_search_edit_or_delete('PUT', cls, $el.attr('data-id'), $modal.find('.modal-body .name').val());
+        refresh_tags_and_searches();
+    });
+
+    $modal.find('.modal-body .icon-trashcan').click(function() {
+        var $el = $(this);
+        tag_and_search_edit_or_delete('DELETE', cls, $el.attr('data-id'), $modal.find('.modal-body .name').attr('value'));
+        refresh_tags_and_searches();
+    });
+
+    $modal.find('.modal-body .icon-undo').click(function() {
+        $modal.find('.modal-body').html(old_modal_body);
+        load_tag_search_general_view($modal);
+    });
+}
+
+function refresh_tags_and_searches() {
+    $.ajax({
+        type: 'GET',
+        url: '/searches'
+    }).success(function (response) {
+        var  template =  _.template('<li class="search col-xs-2 col-sm-1"><a class="animated" href="#search-<%= id %>"> <%= name %> </a></li>');
+        var $el = $('#searches li.arrow-left');
+
+        $('#searches .search').remove();
+        $.each(response.result, function(i, item) {
+            var tag = template
+            $el.after(template({id: item.id, name: item.name}));
+        });
+
+        $('#searches .search').click(search_behaviour);
+        searches_handler.refresh_lis();
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: '/tags'
+    }).success(function (response) {
+        var  template =  _.template('<li class="tag col-xs-2 col-sm-1"><a class="animated" href="#tag-<%= id %>"> <%= name %> </a></li>');
+        var $el = $('#tags ul li.arrow-left');
+
+        $('#tags .tag').remove();
+        $.each(response.result, function(i, item) {
+            $el.after(template({id: item.id, name: item.name}));
+        });
+
+        $('#tags .tag').click(tag_behaviour);
+        tags_handler.refresh_lis();
+    });
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -26,6 +26,7 @@ app.config.from_object(__name__)
 db = Database(app)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 # Models ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class BaseModel(db.Model):
     @classmethod
@@ -52,6 +53,8 @@ class BaseModel(db.Model):
 
 
 RESOURCE_TYPES = (('B', 'F'), ('Bookmark', 'File'))
+
+
 class Resource(BaseModel):
     name = pw.CharField(max_length=50, null=False)
     type = pw.CharField(max_length=5, null=False, choices=RESOURCE_TYPES, default='F')
@@ -106,34 +109,23 @@ class TagSearch(BaseModel):
         return {'id': self.id, 'search': self.search, 'tag': self.tag}
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 # Controllers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @app.route('/')
 def index():
     return render_template("main-view.html")
 
-@app.route("/add-new-tag", methods=['POST'])
-def add_new_tag():
-    tag_name = request.get_json().get('tag_name', '')
-
-    if tag_name and not Tag.exist(name=tag_name):
-        new_tag = Tag.create(name=tag_name)
-        new_tag.save()
-
-        return jsonify({
-            "status": "success",
-            "tag-html": render_template("tag.html", tag=new_tag)
-        })
-    return jsonify({"status": "failure"})
 
 @app.route("/new-resources")
 def new_resources():
     untagged_resources = Resource.select().where(~(Resource.id << TagResource.select(TagResource.resource)))
     return render_template("resources.html", resources=untagged_resources)
 
+
 @app.route("/explorer", methods=['GET', 'POST'])
 def explorer():
     if request.method == 'GET':
-        return render_template("explorer.html", tags=Tag.select(), searches=Search.select())
+        return render_template("explorer.html")
 
     elif request.method == 'POST':
         data = request.get_json()
@@ -141,8 +133,21 @@ def explorer():
         resources = TagResource.get_resources_by_tag(tags_ids)
         return render_template("resources.html", resources=resources)
 
-@app.route("/save-search", methods=['POST'])
-def save_search():
+
+@app.route("/search", methods=['GET'])
+def get_search():
+    search_id = request.args.get('search_id', None)
+
+    if search_id is not None and search_id.isdigit() and Search.exist(id=search_id):
+        return jsonify({
+            'status': 'success',
+            'tags_ids': [tag.id for tag in TagSearch.get_tags_by_search(search_id)]
+        })
+    return jsonify({'status': 'failure'})
+
+
+@app.route("/search", methods=['POST'])
+def new_search():
     data = request.get_json()
     search_name = data.get('search_name', '')
     tags_ids = data.get('tags_ids', '')
@@ -160,16 +165,77 @@ def save_search():
         })
     return jsonify({"status": "failure"})
 
-@app.route("/search")
-def search():
-    search_id = request.args.get('search_id', None)
+
+@app.route("/search", methods=['PUT'])
+def edit_search():
+    search_id = request.get_json().get('id')
+    new_name = request.get_json().get('new_name')
 
     if search_id is not None and search_id.isdigit() and Search.exist(id=search_id):
+        Search.get(id=search_id).update(name=new_name).execute()
+        return jsonify({'status': 'success'}), 200
+
+    return jsonify({'status': 'failure'}), 404
+
+
+@app.route("/search", methods=['DELETE'])
+def del_search():
+    search_id = request.get_json().get('id')
+
+    if search_id is not None and search_id.isdigit() and Search.exist(id=search_id):
+        Search.get(id=search_id).delete_instance(recursive=True)
+        return jsonify({'status': 'success'}), 200
+
+    return jsonify({'status': 'failure'}), 404
+
+
+@app.route("/searches", methods=['GET'])
+def get_searches():
+    return jsonify({'result': [entry.json() for entry in Search.select()]}), 200
+
+
+@app.route("/tag", methods=['POST'])
+def new_tag():
+    tag_name = request.get_json().get('tag_name', '')
+
+    if tag_name and not Tag.exist(name=tag_name):
+        new_tag = Tag.create(name=tag_name)
+        new_tag.save()
+
         return jsonify({
-            'status': 'success',
-            'tags_ids': [tag.id for tag in TagSearch.get_tags_by_search(search_id)]
+            "status": "success",
+            "tag-html": render_template("tag.html", tag=new_tag)
         })
-    return jsonify({'status': 'failure'})
+    return jsonify({"status": "failure"})
+
+
+@app.route("/tag", methods=['PUT'])
+def edit_tag():
+    tag_id = request.get_json().get('id')
+    new_name = request.get_json().get('new_name')
+
+    if tag_id is not None and tag_id.isdigit() and Tag.exist(id=tag_id):
+        Tag.get(id=tag_id).update(name=new_name).execute()
+        return jsonify({'status': 'success'}), 200
+
+    return jsonify({'status': 'failure'}), 404
+
+
+@app.route("/tag", methods=['DELETE'])
+def del_tag():
+    tag_id = request.get_json().get('id')
+
+    if tag_id is not None and tag_id.isdigit() and Tag.exist(id=tag_id):
+        Tag.get(id=tag_id).delete_instance(recursive=True)
+        return jsonify({'status': 'success'}), 200
+
+    return jsonify({'status': 'failure'}), 404
+
+
+@app.route("/tags", methods=['GET'])
+def get_tags():
+    return jsonify({'result': [entry.json() for entry in Tag.select()]}), 200
+
 
 @app.route("/sync", methods=['POST'])
 def sync():
@@ -179,6 +245,7 @@ def sync():
         if not Resource.exist(name=resource_name):
             Resource.create(name=resource_name).save()
     return '', 200
+
 
 @app.route("/update-resources-tags", methods=['POST'])
 def update_resources_tags():
