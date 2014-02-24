@@ -44,22 +44,6 @@
             <h1>{% block h1 %} {% endblock %}</h1>
         </header>
 
-        <nav id="tags">
-            <ul class="row">
-                <li class="col-xs-2 col-sm-1" id="add-new-tag"><a class="animated" data-toggle="modal" href="#add-new-tag-modal"> </a></li>
-                <li class="arrow-left col-xs-2 col-sm-1"><a class="animated" href="#"> </a></li>
-                {% for tag in tags %}
-                <li class="tag col-xs-2 col-sm-1"><a class="animated" href="#tag-{{ tag.id }}">{{ tag.name }}</a></li>
-                {% endfor %}
-                <li class="arrow-right col-xs-2 col-sm-1"><a class="animated" href="#"> </a></li>
-                <li class="col-xs-2 col-sm-1" id="save-search"><a class="animated" data-toggle="modal" href="#save-search-modal"> </a></li>
-            </ul>
-        </nav>
-
-        <div id="search-options">
-            <a class="animated" data-toggle="modal" href="#search-options-modal"> </a>
-        </div>
-
         {% block content %} {% endblock %}
 
         <footer id="page-footer">
@@ -67,119 +51,7 @@
             <p>Nodsine's Technologies</p>
         </footer>
 
-
-        <!-- Modals -->
-        <div class="modal fade" id="add-new-tag-modal" tabindex="-1" role="dialog" aria-labelledby="add-new-tag" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Give your new tag a name</h4>
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" name="new-tag-name" id="new-tag-name" value="" />
-                        <p class="error"> </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary save">Save</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-        <div class="modal fade" id="save-search-modal" tabindex="-1" role="dialog" aria-labelledby="save-search" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Save the current search as...</h4>
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" name="new-search-name" id="new-search-name" value="" />
-                        <p class="error"> </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary save">Save</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-        <div class="modal fade" id="search-options-modal" tabindex="-1" role="dialog" aria-labelledby="search-options" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Search options</h4>
-                    </div>
-                    <div class="modal-body">
-                        <nav id="searches">
-                            <ul class="row">
-                                <li class="arrow-left col-xs-2 col-sm-1"><a class="animated" href="#"> </a></li>
-                                {% for search in searches %}
-                                <li class="search col-xs-4 col-sm-1"><a class="animated" href="#search-{{ search.id }}">{{ search.name }}</a></li>
-                                {% endfor %}
-                                <li class="arrow-right col-xs-2 col-sm-1"><a class="animated" href="#"> </a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-        <div class="modal fade" id="tags-and-searches-modal" tabindex="-1" role="dialog" aria-labelledby="search-options" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Tags & Searches</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                            <h2>Tags</h2>
-
-                            <nav id="view-tags">
-                                <ul class="row"></ul>
-                            </nav>
-                        </div>
-
-                        <div>
-                            <h2>Searches</h2>
-
-                            <nav id="view-searches">
-                                <ul class="row"></ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-        <!-- templates -->
-        <script id="tag-search-detailed-view-template" type="text/templates">
-            <section class="detailed-view">
-                <section>
-                    <div>
-                        <input class="name" type="text" value="<%= name %>"/>
-                    </div>
-
-                    <div class="icons">
-                        <p><a class="icon icon-disk" data-id="<%= id %>" href="#"></a></p>
-                        <p><a class="icon icon-trashcan" data-id="<%= id %>" href="#"></a></p>
-                    </div>
-                </section>
-
-                <p><a class="icon icon-undo" href="#"></a></p>
-            </section>
-        </script>
+        {% block extras %} {% endblock %}
 
         <!-- libs -->
         <script src="../static/js/jquery-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>

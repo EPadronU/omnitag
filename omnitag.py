@@ -1,33 +1,38 @@
 #!/usr/bin/env python
 
-# Modules ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Modules ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import os
 import peewee as pw
+import utils
 
 from flask import Flask
 from flask import jsonify
+from flask import make_response
+from flask import redirect
 from flask import request
 from flask import render_template
 from flask_peewee.db import Database
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# General configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# General configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DATABASE = {
     'name': 'devel.db',
     'engine': 'peewee.SqliteDatabase',
 }
 DEBUG = True
 SECRET_KEY = 'secret'
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Main initialization ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Main initialization ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app = Flask(__name__)
 app.config.from_object(__name__)
 db = Database(app)
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-# Models ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Models ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class BaseModel(db.Model):
     @classmethod
     def exist(cls, **kw):
@@ -107,31 +112,70 @@ class TagSearch(BaseModel):
 
     def json(self):
         return {'id': self.id, 'search': self.search, 'tag': self.tag}
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-# Controllers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+class User(BaseModel):
+    login_name = pw.CharField(max_length=20)
+    hashed_password = pw.CharField(max_length=80)
+    firstname = pw.CharField(max_length=40, null=True)
+    lastname = pw.CharField(max_length=40, null=True)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+#~ Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def get_auth_user(request):
+    user_token = request.cookies.get('user-token', '|')
+    user_id = user_token.split('|')[0]
+
+    if utils.check_secure_cookie(user_token) and User.exist(id=user_id):
+        return User.get(id=user_id)
+
+    return None
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+# Controllers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @app.route('/')
 def index():
-    return render_template("main-view.html")
+    user = get_auth_user(request)
+
+    if user:
+        return render_template('explorer.html')
+
+    else:
+        return render_template("main-view.html")
 
 
-@app.route("/new-resources")
-def new_resources():
-    untagged_resources = Resource.select().where(~(Resource.id << TagResource.select(TagResource.resource)))
-    return render_template("resources.html", resources=untagged_resources)
+@app.route('/login', methods=['POST'])
+def login():
+    response = make_response()
+    login_name = request.get_json().get('login_name')
+    password = request.get_json().get('password')
+
+    if login_name and password:
+        user = User.get(login_name=login_name)
+
+        if user:
+            response.set_cookie('user-token', utils.gen_secure_cookie(user.id))
+
+    return response
 
 
-@app.route("/explorer", methods=['GET', 'POST'])
-def explorer():
+@app.route('/logout', methods=['GET'])
+def logout():
+    response = make_response(redirect('/'))
+    response.set_cookie('user-token', '')
+    return response
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
     if request.method == 'GET':
-        return render_template("explorer.html")
+        pass
 
     elif request.method == 'POST':
-        data = request.get_json()
-        tags_ids = data.get('tags_ids', '')
-        resources = TagResource.get_resources_by_tag(tags_ids)
-        return render_template("resources.html", resources=resources)
+        pass
+    return ""
 
 
 @app.route("/search", methods=['GET'])
@@ -247,6 +291,19 @@ def sync():
     return '', 200
 
 
+@app.route("/tag-resources", methods=['POST'])
+def tag_resources():
+    tags_ids = request.get_json().get('tags_ids', '')
+    resources = TagResource.get_resources_by_tag(tags_ids)
+    return render_template("resources.html", resources=resources)
+
+
+@app.route("/untagged-resources", methods=['GET'])
+def untagged_resources():
+    untagged_resources = Resource.select().where(~(Resource.id << TagResource.select(TagResource.resource)))
+    return render_template("resources.html", resources=untagged_resources)
+
+
 @app.route("/update-resources-tags", methods=['POST'])
 def update_resources_tags():
     data = request.get_json()
@@ -270,9 +327,10 @@ def update_resources_tags():
                     TagResource.get(resource=resource, tag=tag).delete_instance()
             return jsonify({'status': 'success'})
     return jsonify({'status': 'failure'})
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Main ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Main ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if __name__ == "__main__":
     app.run()
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

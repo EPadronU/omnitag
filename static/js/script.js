@@ -43,7 +43,7 @@ $(document).ready(function() {
 
     $("#new-files").click(function() {
         $.ajax({
-            url: "/new-resources",
+            url: "/untagged-resources",
             type: "GET",
         }).done(function(data) {
             $("#resources .row").html(data);
@@ -209,7 +209,7 @@ function refresh_resources() {
             tags_ids: get_active_tags_ids()
         }),
         type: "POST",
-        url: "/explorer"
+        url: "/tag-resources"
     }).done(function(data) {
         $("#resources .row").html(data);
         $("#resources .row .resource").click(function() {
