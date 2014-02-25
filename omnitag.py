@@ -115,7 +115,7 @@ class TagSearch(BaseModel):
 
 
 class User(BaseModel):
-    login_name = pw.CharField(max_length=20)
+    username = pw.CharField(max_length=20)
     hashed_password = pw.CharField(max_length=80)
     firstname = pw.CharField(max_length=40, null=True)
     lastname = pw.CharField(max_length=40, null=True)
@@ -143,22 +143,42 @@ def index():
         return render_template('explorer.html')
 
     else:
-        return render_template("main-view.html")
+        return render_template('index.html')
 
 
 @app.route('/login', methods=['POST'])
 def login():
-    response = make_response()
-    login_name = request.get_json().get('login_name')
-    password = request.get_json().get('password')
+    user = None
+    an_error_has_ocurred = False
+    username = request.form.get('username')
+    password = request.form.get('password')
+    errors = {}
 
-    if login_name and password:
-        user = User.get(login_name=login_name)
+    if not username or not utils.validate_data(username, 'username'):
+        errors['username_error'] = 'Incorrect username'
+        an_error_has_ocurred = True
 
-        if user:
-            response.set_cookie('user-token', utils.gen_secure_cookie(user.id))
+    elif not User.exist(username=username):
+        errors['username_error'] = 'This user does not exist'
+        an_error_has_ocurred = True
 
-    return response
+    else:
+        user = User.get(username=username)
+
+        if not password:
+            errors['password_error'] = 'Please, introduce the password'
+            an_error_has_ocurred = True
+
+        elif not utils.check_password(password, str(user.hashed_password)):
+            errors['password_error'] = 'Wrong password'
+            an_error_has_ocurred = True
+
+    if not an_error_has_ocurred:
+        response = make_response(redirect('/'))
+        response.set_cookie('user-token', utils.gen_secure_cookie(user.id))
+        return response
+
+    return render_template('index.html', username=username, **errors)
 
 
 @app.route('/logout', methods=['GET'])
@@ -168,14 +188,39 @@ def logout():
     return response
 
 
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/signup', methods=['POST'])
 def signup():
-    if request.method == 'GET':
-        pass
+    an_error_has_ocurred = False
+    username = request.form.get('username')
+    password = request.form.get('password')
+    repeat_password = request.form.get('password-repeat')
+    errors = {}
 
-    elif request.method == 'POST':
-        pass
-    return ""
+    if not username or not utils.validate_data(username, 'username'):
+        errors['username_error'] = 'Use alphanumeric characters (3 to 20) only'
+        an_error_has_ocurred = True
+
+    elif User.exist(username=username):
+        errors['username_error'] = 'This username is already on use'
+        an_error_has_ocurred = True
+
+    if not password or not utils.validate_data(password, 'password'):
+        errors['password_error'] = 'Use alphanumeric characters (3 to 20) only'
+        an_error_has_ocurred = True
+
+    elif not repeat_password or repeat_password != password:
+        errors['repeat_password_error'] = 'The passwords do not match'
+        an_error_has_ocurred = True
+
+    if not an_error_has_ocurred:
+        new_user = User(username=username, hashed_password=utils.encrypt_password(password))
+        new_user.save()
+
+        response = make_response(redirect('/'))
+        response.set_cookie('user-token', utils.gen_secure_cookie(new_user.id))
+        return response
+
+    return render_template('index.html', username=username, **errors)
 
 
 @app.route("/search", methods=['GET'])

@@ -56,6 +56,30 @@ nav .row .arrow-right a:before {
     font-family: icomoon;
     opacity: 0.9;
 }
+#index-form {
+    border-radius: 8px;
+    box-shadow: 1px 1px 5px #2A7FFF;
+    margin: 1em auto;
+    padding: 0.5em 1em;
+    max-width: 450px;
+    text-align: center;
+    width: 96%;
+}
+#index-form form input {
+    border: 1px solid grey;
+    border-radius: 5px;
+    max-width: 250px;
+    width: 100%;
+}
+#index-form form input:focus {
+    box-shadow: 1px 1px 5px #2A7FFF;
+}
+#index-form form label {
+    padding: 0 0.5em;
+}
+#index-form form .form-group {
+    margin-bottom: 2px;
+}
 #page-footer {
     background: #373E48;
     color: white;
@@ -296,6 +320,14 @@ nav .row .arrow-right a:before {
     margin: 0.2em auto;
     opacity: 0.9;
     width: 60%;
+}
+.form-error {
+    background-color: #FF6666;
+    border-radius: 5px;
+    color: white;
+    font-size: 0.85em;
+    font-weight: bold;
+    text-align: center;
 }
 .modal-content {
     background: #535D6C;

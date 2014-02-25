@@ -2,11 +2,18 @@
 import hashlib
 import hmac
 import random
+import re
 import string
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 #~ Constants ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+REGEX = {
+    'email': re.compile(r"^([\S]+@[\S]+\.[\S]+)|$"),
+    'password': re.compile(r"^.{3,20}$"),
+    'username': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
+}
+
 SECRET_KEY = 'fefb60b9e2a84009884c'
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -30,7 +37,7 @@ def gen_salt(lenght):
 
 
 def gen_secure_cookie(value):
-    return str(value) + '|' + hmac.new(SECRET_KEY, str(value), hashlib.sha256).hexdigest()[:20]
+    return str(value) + '|' + hmac.new(SECRET_KEY, str(value), hashlib.sha256).hexdigest()
 
 
 def get_auth_user_id(request):
@@ -40,6 +47,10 @@ def get_auth_user_id(request):
         return user_token.split('|')[0]
 
     return None
+
+
+def validate_data(data, regex_class):
+    return REGEX[regex_class].match(data)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 

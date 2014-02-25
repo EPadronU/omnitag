@@ -21,24 +21,7 @@
                     <p><a href="#">Omti Tag</a></p>
                 </section>
 
-                <div id="avatar" class="col-xs-4">
-                    <figure>
-                        <img src="/static/img/avatar.jpg" alt="User's avatar" />
-
-                        <figcaption id="account-options" class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> </a>
-
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a id="new-files" role="menuitem" tabindex="-1" href="#">New files</a></li>
-                                <li role="presentation">
-                                    <a id="tags-and-searches" role="menuitem" data-toggle="modal" href="#tags-and-searches-modal">Tags & Searches</a>
-                                </li>
-                                <li role="presentation"><a id="settings" role="menuitem" tabindex="-1" href="#">Settings</a></li>
-                                <li role="presentation"><a id="logout" role="menuitem" tabindex="-1" href="#">Log out</a></li>
-                            </ul>
-                        </figcaption>
-                    </figure>
-                </div>
+                {% block header %} {% endblock %}
             </div>
 
             <h1>{% block h1 %} {% endblock %}</h1>
