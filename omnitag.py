@@ -15,6 +15,11 @@ from flask_peewee.db import Database
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+#~ Constants ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RESOURCE_TYPES = (('B', 'F'), ('Bookmark', 'File'))
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 # General configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DATABASE = {
     'name': 'devel.db',
@@ -57,11 +62,26 @@ class BaseModel(db.Model):
         return {'id': self.id}
 
 
-RESOURCE_TYPES = (('B', 'F'), ('Bookmark', 'File'))
+class User(BaseModel):
+    username = pw.CharField(max_length=20)
+    hashed_password = pw.CharField(max_length=80)
+    firstname = pw.CharField(max_length=40, null=True)
+    lastname = pw.CharField(max_length=40, null=True)
+
+
+class Device(BaseModel):
+    name = pw.CharField(max_length=20)
+    user = pw.ForeignKeyField(User)
+    token = pw.CharField(max_length=80, null=True)
+
+    def json(self):
+        return {'id': self.id, 'name': self.name, 'token': self.token}
 
 
 class Resource(BaseModel):
+    device = pw.ForeignKeyField(Device)
     name = pw.CharField(max_length=50, null=False)
+    path = pw.CharField(max_length=200, null=False)
     type = pw.CharField(max_length=5, null=False, choices=RESOURCE_TYPES, default='F')
 
     def json(self):
@@ -112,13 +132,6 @@ class TagSearch(BaseModel):
 
     def json(self):
         return {'id': self.id, 'search': self.search, 'tag': self.tag}
-
-
-class User(BaseModel):
-    username = pw.CharField(max_length=20)
-    hashed_password = pw.CharField(max_length=80)
-    firstname = pw.CharField(max_length=40, null=True)
-    lastname = pw.CharField(max_length=40, null=True)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -144,6 +157,56 @@ def index():
 
     else:
         return render_template('index.html')
+
+
+@app.route('/device', methods=['GET'])
+def get_devices():
+    user = get_auth_user(request)
+    if not user: return '', 404
+
+    return jsonify({'result': [row.json() for row in Device.select().where(Device.user == user.id)]})
+
+
+@app.route('/device/<int:device_id>', methods=['GET'])
+def get_device(device_id):
+    user = get_auth_user(request)
+    if not user: return '', 404
+
+    if Device.exist(id=int(device_id), user=user):
+        return jsonify(Device.get(id=device_id).json())
+
+    return '', 404
+
+
+@app.route('/device', methods=['POST'])
+def add_device():
+    user = get_auth_user(request)
+    if not user: return '', 404
+
+    device_name = request.get_json().get('device_name')
+
+    if device_name and not Device.exist(name=device_name, user=user):
+        new_device = Device(name=device_name, user=user)
+        new_device.save()
+
+        device_token = utils.gen_secure_cookie(new_device.id)
+        Device.update(token=device_token).where(Device.id == new_device.id).execute()
+
+        return '', 200
+
+    return '', 404
+
+
+@app.route('/device/<int:device_id>', methods=['DELETE'])
+def del_device(device_id):
+    user = get_auth_user(request)
+    if not user: return '', 404
+
+    if device_id and Device.exist(id=device_id, user=user):
+        Device.get(id=device_id).delete_instance()
+        return '', 200
+
+    return '', 404
 
 
 @app.route('/login', methods=['POST'])
@@ -328,11 +391,30 @@ def get_tags():
 
 @app.route("/sync", methods=['POST'])
 def sync():
+    user_token = request.get_json().get('user-token')
+    device_token = request.get_json().get('device-token')
+
+    if not user_token or not utils.check_secure_cookie(user_token):
+        return '', 404
+
+    else:
+        user_id = user_token.split('|')[0]
+        if not User.exist(id=user_id):
+            return '', 404
+
+    if not device_token or not utils.check_secure_cookie(device_token):
+        return '', 404
+
+    else:
+        device_id = device_token.split('|')[0]
+        if not Device.exist(id=device_id, user=user_id):
+            return '', 404
+
     for filepath in request.get_json().get('new-resources', []):
         resource_name = os.path.basename(filepath)
 
         if not Resource.exist(name=resource_name):
-            Resource.create(name=resource_name).save()
+            Resource.create(name=resource_name, path=filepath, device=device_id).save()
     return '', 200
 
 

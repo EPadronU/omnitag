@@ -264,26 +264,38 @@ nav .row .arrow-right a:before {
     padding-left: 0;
     padding-right: 0;
 }
-#tags-and-searches-modal .modal-body {
+.modal-body.special {
     position: relative;
 }
-#tags-and-searches-modal .modal-body input {
+.modal-body.special #add-device .icons {
+    position: relative;
+    top: 20px;
+}
+.modal-body.special #show-device #device-token {
+    background-color: #DDD;
+    border-radius: 8px;
+    box-shadow: 1px 1px 5px #FDD;
+    color: #333;
+    margin: 1em auto 2em auto;
+    width: 50%;
+}
+.modal-body.special input {
     font-size: 1.2em;
 }
-#tags-and-searches-modal .modal-body > div {
+.modal-body.special > div {
     box-shadow: 1px 2px 6px #637D6C;
     margin: 1em;
 }
-#tags-and-searches-modal .modal-body h2 {
+.modal-body.special h2 {
     margin: 0 auto 0.5em auto;
 }
-#tags-and-searches-modal .modal-body ul li {
+.modal-body.special ul li {
     background-color: transparent;
     border: none;
     list-style: none;
     padding: 0;
 }
-#tags-and-searches-modal .modal-body ul li a {
+.modal-body.special ul li a {
     background-color: #59F;
     border: 1px solid #637D6C;
     border-radius: 5px;
@@ -294,22 +306,25 @@ nav .row .arrow-right a:before {
     padding: 0.5em;
     width: 90%;
 }
-#tags-and-searches-modal .modal-body .icon {
+.modal-body.special .icon {
     background-color: #59F;
     border-radius: 5px;
     color: white;
     font-size: 1.3em;
     padding: 0.5em;
 }
-#tags-and-searches-modal .modal-body .icon-undo {
+.modal-body.special .icon-plus {
+    background-color: #637D6C;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.modal-body.special .icon-undo {
     position: absolute;
     left: 0;
     top: 0;
 }
-#tags-and-searches-modal .modal-body .icons {
-    margin: 2em;
-}
-#tags-and-searches-modal .modal-body .icons p {
+.modal-body.special .icons p {
     display: inline-block;
     margin: 0 2em;
 }

@@ -13,12 +13,21 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"> </a>
 
                 <ul class="dropdown-menu" role="menu">
-                    <li role="presentation"><a id="new-files" role="menuitem" tabindex="-1" href="#">New files</a></li>
+                    <li role="presentation">
+                        <a id="new-files" role="menuitem" tabindex="-1" href="#">New files</a>
+                    </li>
+
+                    <li role="presentation">
+                        <a id="devices" role="menuitem" data-toggle="modal" href="#devices-modal">Devices</a>
+                    </li>
+
                     <li role="presentation">
                         <a id="tags-and-searches" role="menuitem" data-toggle="modal" href="#tags-and-searches-modal">Tags & Searches</a>
                     </li>
-                    <li role="presentation"><a id="settings" role="menuitem" tabindex="-1" href="#">Settings</a></li>
-                    <li role="presentation"><a id="logout" role="menuitem" tabindex="-1" href="/logout">Log out</a></li>
+
+                    <li role="presentation">
+                        <a id="logout" role="menuitem" tabindex="-1" href="/logout">Log out</a>
+                    </li>
                 </ul>
             </figcaption>
         </figure>
@@ -53,6 +62,22 @@
 
 {% block extras %}
     <!-- Modals -->
+    <div class="modal fade" id="devices-modal" tabindex="-1" role="dialog" aria-labelledby="search-options" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Devices</h4>
+                </div>
+                <div class="modal-body special">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <div class="modal fade" id="add-new-tag-modal" tabindex="-1" role="dialog" aria-labelledby="add-new-tag" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -123,7 +148,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Tags & Searches</h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body special">
                     <div>
                         <h2>Tags</h2>
 
@@ -148,6 +173,48 @@
     </div><!-- /.modal -->
 
     <!-- templates -->
+    <script id="device-template" type="text/template">
+        <li class="col-xs-6 col-sm-3">
+            <a data-id="<%= id %>" href="#"> <%= name %> </a>
+        </li>
+    </script>
+
+    <script id="devices-template" type="text/template">
+        <section id="show-devices">
+            <nav>
+                <ul class="row"></ul>
+            </nav>
+
+            <p><a class="icon icon-plus" href="#"></a></p>
+        </section>
+    </script>
+
+    <script id="show-device-template" type="text/template">
+        <section id="show-device">
+            <div id="device-name"><input type="text" value="<%= name %>"/></div>
+            <div id="device-token"><p><%= token %></p></div>
+
+            <div class="icons">
+                <p><a class="icon icon-disk" data-id="<%= id %>" href="#"></a></p>
+                <p><a class="icon icon-trashcan" data-id="<%= id %>" href="#"></a></p>
+            </div>
+
+            <p><a class="icon icon-undo" href="#"></a></p>
+        </section>
+    </script>
+
+    <script id="add-device-template" type="text/template">
+        <section id="add-device">
+            <div id="device-name"><input type="text" value="<%= name %>"/></div>
+
+            <div class="icons">
+                <p><a class="icon icon-disk" href="#"></a></p>
+            </div>
+
+            <p><a class="icon icon-undo" href="#"></a></p>
+        </section>
+    </script>
+
     <script id="tag-search-detailed-view-template" type="text/templates">
         <section class="detailed-view">
             <section>

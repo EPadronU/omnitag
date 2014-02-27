@@ -121,6 +121,10 @@ $(document).ready(function() {
         tags_handler.next_group_of_lis();
     });
 
+    $('#devices-modal').on('show.bs.modal', function() {
+        load_devices($(this));
+    });
+
     $('#tags-and-searches-modal').on('show.bs.modal', function() {
         load_tag_search_general_view($(this));
     });
@@ -290,6 +294,87 @@ function tag_and_search_edit_or_delete(type, cls, id, new_name) {
         url: '/' + cls,
     });
 }
+
+
+function load_devices($el) {
+    var device_template = _.template($('#device-template').html());
+    var devices_template = _.template($('#devices-template').html());
+    var add_device_template = _.template($('#add-device-template').html());
+    var show_device_template = _.template($('#show-device-template').html());
+
+    $.ajax({
+        contentType: 'application/json',
+        url: '/device',
+    }).success(function(data) {
+        var $devices = $(devices_template());
+
+        $.each(data.result, function(i, device) {
+            var $device = $(device_template({id: device.id, name: device.name}));
+
+            $device.find('a').click(function() {
+                var $show_device = $(show_device_template({id: device.id, name: device.name, token: device.token}));
+
+                $show_device.find('.icon-disk').click(function() {
+                    $.ajax({
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            id: device_id,
+                        }),
+                        method: 'PUT',
+                        url: '/device/' + device_id,
+                    });
+                });
+
+                $show_device.find('.icon-trash').click(function() {
+                    $.ajax({
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            id: device_id,
+                        }),
+                        method: 'DELETE',
+                        url: '/device/' + device_id,
+                    });
+                });
+
+                $show_device.find('.icon-undo').click(function() {
+                    $el.trigger('show.bs.modal');
+                });
+
+                $el.find('.modal-body').html($show_device);
+            });
+
+            $devices.find('ul').append($device);
+        });
+
+        $devices.find('.icon-plus').click(function() {
+            var $add_device = $(add_device_template());
+
+            $add_device.find('.icon-disk').click(function() {
+                var device_name = $add_device.find('#device-name input').val();
+
+                if(!device_name) return;
+
+                $.ajax({
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        device_name: device_name,
+                    }),
+                    method: 'POST',
+                    url: '/device',
+                });
+            });
+
+            $add_device.find('.icon-undo').click(function() {
+                $el.trigger('show.bs.modal');
+            });
+
+            $el.find('.modal-body').html($add_device);
+        });
+
+        $el.find('.modal-body').html($devices);
+    });
+}
+
 
 function load_tag_search_general_view($modal) {
     var template = _.template('<li class="col-xs-6 col-sm-3 <%= cls %>"><a href="<%= href %>"> <%= val %> </a></li>');

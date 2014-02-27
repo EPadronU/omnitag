@@ -37,7 +37,7 @@ def gen_salt(lenght):
 
 
 def gen_secure_cookie(value):
-    return str(value) + '|' + hmac.new(SECRET_KEY, str(value), hashlib.sha256).hexdigest()
+    return str(value) + '|' + hmac.new(SECRET_KEY, str(value), hashlib.sha256).hexdigest()[:20]
 
 
 def get_auth_user_id(request):
