@@ -289,10 +289,7 @@ nav .row .arrow-right a:before {
     padding-left: 0;
     padding-right: 0;
 }
-.modal-body.special {
-    position: relative;
-}
-.modal-body.special #add-device .icons {
+.modal-body .icons {
     position: relative;
     top: 20px;
 }
@@ -301,7 +298,7 @@ nav .row .arrow-right a:before {
     border-radius: 8px;
     box-shadow: 1px 1px 5px #FDD;
     color: #333;
-    margin: 1em auto 2em auto;
+    margin: 1em auto 0 auto;
     width: 50%;
 }
 .modal-body.special input {

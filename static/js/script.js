@@ -447,12 +447,14 @@ function load_tag_search_detailed_view($el, cls) {
         var $el = $(this);
         tag_and_search_edit_or_delete('PUT', cls, $el.attr('data-id'), $modal.find('.modal-body .name').val());
         refresh_tags_and_searches();
+        $modal.find('.modal-body .icon-undo').click();
     });
 
     $modal.find('.modal-body .icon-trashcan').click(function() {
         var $el = $(this);
         tag_and_search_edit_or_delete('DELETE', cls, $el.attr('data-id'), $modal.find('.modal-body .name').attr('value'));
         refresh_tags_and_searches();
+        $modal.find('.modal-body .icon-undo').click();
     });
 
     $modal.find('.modal-body .icon-undo').click(function() {
