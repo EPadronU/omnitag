@@ -45,12 +45,11 @@ $(document).ready(function() {
         $.ajax({
             url: "/untagged-resources",
             type: "GET",
-        }).done(function(data) {
+        }).success(function(data) {
             $("#resources .row").html(data);
-            $("#resources .row .resource").click(function() {
-                $(this).toggleClass("active");
-                $("#resources #select-all-none").addClass("active");
-            });
+            $.each($("#resources .row .resource a"), function(i, item) {
+                resource_behaviour($(item));
+            })
         });
     });
 
@@ -58,10 +57,10 @@ $(document).ready(function() {
         $(this).toggleClass("active");
 
         if($(this).hasClass("active")) {
-            $("#resources .row .resource").addClass("active");
+            $("#resources .row .resource a").addClass("active");
 
         } else {
-            $("#resources .row .resource").removeClass("active");
+            $("#resources .row .resource a").removeClass("active");
         }
     });
 
@@ -191,11 +190,12 @@ NavHandler.prototype.refresh_lis = function() {
 function get_active_resources_ids() {
     var resources_ids = [];
 
-    $("#resources .row .resource.active").each(function(index) {
-        resources_ids[index] = $(this).html().split(/resource-([0-9]+)/)[1];
+    $("#resources .row .resource a.active").each(function(index) {
+        resources_ids[index] = $(this).attr('data-id');
     });
     return resources_ids;
 }
+
 
 function get_active_tags_ids() {
     var tags_ids = [];
@@ -205,6 +205,7 @@ function get_active_tags_ids() {
     });
     return tags_ids;
 }
+
 
 function refresh_resources() {
     $.ajax({
@@ -216,12 +217,38 @@ function refresh_resources() {
         url: "/tag-resources"
     }).done(function(data) {
         $("#resources .row").html(data);
-        $("#resources .row .resource").click(function() {
-            $(this).toggleClass("active");
+        $.each($("#resources .row .resource a"), function(i, item) {
+            resource_behaviour($(item));
+        })
+    });
+}
+
+
+function resource_behaviour($el) {
+    $el.click(function() {
+        $el.toggleClass("active");
+
+        if($('#resources .row .resource a.active').length >= 1) {
             $("#resources #select-all-none").addClass("active");
+
+        } else {
+            $("#resources #select-all-none").removeClass("active");
+        }
+
+    }).dblclick(function() {
+        $.ajax({
+            url: '/resource/' + $el.attr('data-id'),
+            type: 'GET',
+        }).success(function(data) {
+            var $modal = $('#detailed-resource-view-modal');
+            $modal.find('#detailed-resource-view-name').html(data.result.name);
+            $modal.find('#detailed-resource-view-device').html(data.result.device.name);
+            $modal.find('#detailed-resource-view-path').html(data.result.path);
+            $modal.modal('show');
         });
     });
 }
+
 
 function search_behaviour() {
     $.ajax({
@@ -249,6 +276,7 @@ function search_behaviour() {
     $('#searches .search').removeClass('active');
     $(this).toggleClass('active');
 }
+
 
 function tag_behaviour() {
     $(this).toggleClass('active');
@@ -318,21 +346,25 @@ function load_devices($el) {
                     $.ajax({
                         contentType: 'application/json',
                         data: JSON.stringify({
-                            id: device_id,
+                            id: device.id,
                         }),
                         method: 'PUT',
-                        url: '/device/' + device_id,
+                        url: '/device/' + device.id,
+                    }).success(function() {
+                        $el.trigger('show.bs.modal');
                     });
                 });
 
-                $show_device.find('.icon-trash').click(function() {
+                $show_device.find('.icon-trashcan').click(function() {
                     $.ajax({
                         contentType: 'application/json',
                         data: JSON.stringify({
-                            id: device_id,
+                            id: device.id,
                         }),
                         method: 'DELETE',
-                        url: '/device/' + device_id,
+                        url: '/device/' + device.id,
+                    }).success(function() {
+                        $el.trigger('show.bs.modal');
                     });
                 });
 
@@ -361,6 +393,8 @@ function load_devices($el) {
                     }),
                     method: 'POST',
                     url: '/device',
+                }).success(function() {
+                    $el.trigger('show.bs.modal');
                 });
             });
 
@@ -398,6 +432,7 @@ function load_tag_search_general_view($modal) {
     })
 }
 
+
 function load_tag_search_detailed_view($el, cls) {
     var template = _.template($('#tag-search-detailed-view-template').html());
     var $modal = $('#tags-and-searches-modal');
@@ -425,6 +460,7 @@ function load_tag_search_detailed_view($el, cls) {
         load_tag_search_general_view($modal);
     });
 }
+
 
 function refresh_tags_and_searches() {
     $.ajax({

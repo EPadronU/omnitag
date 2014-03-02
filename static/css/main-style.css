@@ -56,6 +56,31 @@ nav .row .arrow-right a:before {
     font-family: icomoon;
     opacity: 0.9;
 }
+#detailed-resource-view-modal .modal-body {
+    margin: 0.5em 1em;
+}
+#detailed-resource-view-modal .row {
+    background-color: #C8CBCF;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    box-shadow: 1px 1px 2px #333;
+    margin: 0.2em 0;
+    padding: 0.5em 0.2em;
+}
+#detailed-resource-view-modal .row + .row {
+    margin-top: 1em;
+}
+#detailed-resource-view-modal .row p {
+    color: #333;
+    margin-bottom: 0;
+}
+#detailed-resource-view-modal .row p:first-child {
+    font-weight: bold;
+    text-align: right;
+}
+#detailed-resource-view-modal .row p:last-child {
+    text-align: left;
+}
 #index-form {
     border-radius: 8px;
     box-shadow: 1px 1px 5px #2A7FFF;
@@ -210,7 +235,7 @@ nav .row .arrow-right a:before {
 #resources .row .resource {
     padding: 0.2em;
 }
-#resources .row .resource.active a {
+#resources .row .resource a.active {
     background: #CCC;
     border-radius: 3px;
     color: #1A1A1A;

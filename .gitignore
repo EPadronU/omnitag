@@ -4,3 +4,6 @@
 
 # Compiled source code #
 *.pyc
+
+# Rope #
+.ropeproject/

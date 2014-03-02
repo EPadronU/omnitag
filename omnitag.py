@@ -85,7 +85,13 @@ class Resource(BaseModel):
     type = pw.CharField(max_length=5, null=False, choices=RESOURCE_TYPES, default='F')
 
     def json(self):
-        return {'id': self.id, 'name': self.name, 'type': self.type}
+        return {
+            'id': self.id,
+            'name': self.name,
+            'device': Device.get(id=self.device).json(),
+            'path': self.path,
+            'type': self.type
+        }
 
 
 class Search(BaseModel):
@@ -249,6 +255,13 @@ def logout():
     response = make_response(redirect('/'))
     response.set_cookie('user-token', '')
     return response
+
+
+@app.route('/resource/<int:resource_id>', methods=['GET'])
+def get_resource(resource_id):
+    if Resource.exist(id=resource_id):
+        return jsonify({'result': Resource.get(id=resource_id).json()})
+    return '', 404
 
 
 @app.route('/signup', methods=['POST'])
