@@ -202,6 +202,20 @@ def get_device(device_id):
     return '', 404
 
 
+@app.route('/device/<int:device_id>', methods=['PUT'])
+def edit_device(device_id):
+    user = get_auth_user(request)
+    if not user: return '', 404
+
+    new_name = request.get_json().get('new_name')
+
+    if new_name and Device.exist(id=device_id, user=user.id):
+        Device.update(name=new_name).where(Device.id == device_id).execute()
+        return jsonify({'status': 'success'}), 200
+
+    return jsonify({'status': 'failure'}), 404
+
+
 @app.route('/device', methods=['POST'])
 def add_device():
     user = get_auth_user(request)

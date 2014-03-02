@@ -346,7 +346,7 @@ function load_devices($el) {
                     $.ajax({
                         contentType: 'application/json',
                         data: JSON.stringify({
-                            id: device.id,
+                            new_name: $show_device.find('#device-name input').val(),
                         }),
                         method: 'PUT',
                         url: '/device/' + device.id,
