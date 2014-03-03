@@ -294,7 +294,10 @@ def get_resource(resource_id):
     user = get_auth_user(request)
     if not user: return '', 404
 
-    if Resource.where((Resource.id == resource_id) & (Resource.device << Device.get(user=user.id))).exists():
+    if Resource.select().where(
+        (Resource.id == resource_id) &
+        (Resource.device << Device.select().where(Device.user == user.id))
+    ).exists():
         return jsonify({'result': Resource.get(id=resource_id).json()})
     return '', 404
 
