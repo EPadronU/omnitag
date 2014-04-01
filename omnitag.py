@@ -168,6 +168,15 @@ def get_auth_user(request):
         return User.get(id=user_id)
 
     return None
+
+
+def get_or_create(cls, **kwargs):
+    if not cls.exist(**kwargs):
+        new_row = cls(**kwargs)
+        new_row.save()
+        return new_row.id
+
+    return cls.get(**kwargs).id
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -488,11 +497,16 @@ def sync():
         if not Device.exist(id=device_id, user=user_id):
             return '', 404
 
-    for filepath in request.get_json().get('new-resources', []):
+    for filepath, tags in request.get_json().get('new-resources', []):
         resource_name = os.path.basename(filepath)
 
         if not Resource.exist(name=resource_name):
-            Resource.create(name=resource_name, path=filepath, device=device_id).save()
+            resource = Resource.create(name=resource_name, path=filepath, device=device_id)
+            resource.save()
+
+            for tag in tags:
+                TagResource(tag=get_or_create(Tag, name=tag, user=user_id), resource=resource.id).save()
+
     return '', 200
 
 
