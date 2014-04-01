@@ -80,22 +80,22 @@ class Device(BaseModel):
 
 class Resource(BaseModel):
     device = pw.ForeignKeyField(Device)
-    name = pw.CharField(max_length=50, null=False)
-    path = pw.CharField(max_length=200, null=False)
-    type = pw.CharField(max_length=5, null=False, choices=RESOURCE_TYPES, default='F')
+    name = pw.CharField(max_length=50)
+    path = pw.CharField(max_length=200)
+    type = pw.CharField(max_length=5, choices=RESOURCE_TYPES, default='F')
 
     @classmethod
     def get_untagged_resources(cls, user):
         return Resource.select().where(
-            (Resource.device << Device.select().where(Device.user == user)) &
-            ~(Resource.id << TagResource.select(TagResource.resource))
+            (Resource.device << Device.select().where(Device.user == user))
+            & ~(Resource.id << TagResource.select(TagResource.resource))
         )
 
     @classmethod
     def get_by_id(cls, ids,  user):
         return Resource.select().where(
-            (Resource.device << Device.select().where(Device.user == user)) &
-            (Resource.id << ids)
+            (Resource.device << Device.select().where(Device.user == user))
+            & (Resource.id << ids)
         )
 
     def json(self):
@@ -109,7 +109,7 @@ class Resource(BaseModel):
 
 
 class Search(BaseModel):
-    name = pw.CharField(max_length=50, null=False)
+    name = pw.CharField(max_length=50)
     user = pw.ForeignKeyField(User)
 
     @classmethod
@@ -121,7 +121,7 @@ class Search(BaseModel):
 
 
 class Tag(BaseModel):
-    name = pw.CharField(max_length=20, null=False, index=True)
+    name = pw.CharField(max_length=20, index=True)
     user = pw.ForeignKeyField(User)
 
     @classmethod
