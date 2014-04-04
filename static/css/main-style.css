@@ -295,8 +295,13 @@ nav .row .arrow-right a:before {
 #settings-modal .modal-body .row div:first-of-type {
     text-align: right;
 }
+#settings-modal .modal-body .row div:last-of-type {
+    text-align: left;
+}
 #settings-modal .modal-body .row div:last-of-type input {
-    min-width: 72%;
+    border-radius: 5px;
+    min-width: 78%;
+    padding-left: 0.8em;
     text-align: left;
 }
 .modal-body .icons {
