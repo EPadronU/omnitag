@@ -12,6 +12,7 @@ from flask import redirect
 from flask import request
 from flask import render_template
 from flask_peewee.db import Database
+from uuid import uuid4
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -65,6 +66,7 @@ class BaseModel(db.Model):
 class User(BaseModel):
     username = pw.CharField(max_length=20)
     hashed_password = pw.CharField(max_length=80)
+    token = pw.CharField(max_length=36, unique=True, default=uuid4())
     firstname = pw.CharField(max_length=40, null=True)
     lastname = pw.CharField(max_length=40, null=True)
 
@@ -72,7 +74,7 @@ class User(BaseModel):
 class Device(BaseModel):
     name = pw.CharField(max_length=20)
     user = pw.ForeignKeyField(User)
-    token = pw.CharField(max_length=80, null=True)
+    token = pw.CharField(max_length=36, unique=True, default=uuid4())
 
     def json(self):
         return {'id': self.id, 'name': self.name, 'token': self.token}
@@ -233,11 +235,7 @@ def add_device():
     device_name = request.get_json().get('device_name')
 
     if device_name and not Device.exist(name=device_name, user=user):
-        new_device = Device(name=device_name, user=user)
-        new_device.save()
-
-        device_token = utils.gen_secure_cookie(new_device.id)
-        Device.update(token=device_token).where(Device.id == new_device.id).execute()
+        Device(name=device_name, user=user).save()
 
         return '', 200
 
@@ -476,24 +474,49 @@ def get_tags():
     return jsonify({'result': [entry.json() for entry in Tag.select().where(Tag.user == user.id)]}), 200
 
 
+@app.route('/settings', methods=['GET'])
+def get_settings():
+    user = get_auth_user(request)
+    if not user: return '', 404
+
+    return jsonify({
+        'token': user.token,
+        'firstname': user.firstname,
+        'lastname': user.lastname,
+    })
+
+
+@app.route('/settings', methods=['POST'])
+def post_settings():
+    user = get_auth_user(request)
+    if not user: return '', 404
+
+    user.firstname = request.get_json().get('firstname')
+    user.lastname = request.get_json().get('lastname')
+    user.save()
+
+    return '', 200
+
+
 @app.route("/sync", methods=['POST'])
 def sync():
     user_token = request.get_json().get('user-token')
     device_token = request.get_json().get('device-token')
 
-    if not user_token or not utils.check_secure_cookie(user_token):
+    if not user_token or not User.exist(token=user_token):
         return '', 404
 
     else:
-        user_id = user_token.split('|')[0]
+        user_id = User.get(token=user_token)
+
         if not User.exist(id=user_id):
             return '', 404
 
-    if not device_token or not utils.check_secure_cookie(device_token):
+    if not device_token or not Device.exist(token=device_token):
         return '', 404
 
     else:
-        device_id = device_token.split('|')[0]
+        device_id = Device.get(token=device_token)
         if not Device.exist(id=device_id, user=user_id):
             return '', 404
 

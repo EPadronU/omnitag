@@ -131,6 +131,32 @@ $(document).ready(function() {
     $('#tags-and-searches-modal').on('show.bs.modal', function() {
         $(this).find('.icon-undo').click();
     });
+
+    $('#settings-modal').on('show.bs.modal', function() {
+        var $this = $(this);
+
+        $.ajax({
+            type: 'GET',
+            url: '/settings',
+        }).success(function(response) {
+            $this.find('#token').val(response.token);
+            $this.find('#firstname').val(response.firstname);
+            $this.find('#lastname').val(response.lastname);
+        });
+    });
+
+    $('#settings-modal .btn-default').click(function() {
+        var $this = $('#settings-modal');
+        var firstname = $this.find('#firstname').val();
+        var lastname = $this.find('#lastname').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/settings',
+            contentType: 'application/json',
+            data: JSON.stringify({firstname: firstname, lastname: lastname}),
+        });
+    });
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
 
