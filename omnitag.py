@@ -179,6 +179,16 @@ def get_or_create(cls, **kwargs):
         return new_row.id
 
     return cls.get(**kwargs).id
+
+
+def create_db_tables():
+    Device.create_table(fail_silently=True)
+    Resource.create_table(fail_silently=True)
+    Search.create_table(fail_silently=True)
+    Tag.create_table(fail_silently=True)
+    TagResource.create_table(fail_silently=True)
+    TagSearch.create_table(fail_silently=True)
+    User.create_table(fail_silently=True)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -582,5 +592,7 @@ def update_resources_tags():
 
 # ~~ Main ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if __name__ == "__main__":
-    app.run()
+    create_db_tables()
+
+    app.run(port=5000)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
